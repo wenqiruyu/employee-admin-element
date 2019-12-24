@@ -48,10 +48,9 @@
                         const params = new URLSearchParams()
                         params.append('username', this.ruleForm.username)
                         params.append('password', this.ruleForm.password)
-                        this.$axios.post('/venus-admin-server/user/login',params).then((res) => {
+                        this.$axios.post('/employee-admin-server/user/login',params).then((res) => {
                             if(res.data.code == 200){
-                                localStorage.setItem('venus_username',this.ruleForm.username)
-                                localStorage.setItem('venus_token',res.data.data)
+                                localStorage.setItem('employee_username',this.ruleForm.username)
                                 this.$router.push('/index')
                             }else{
                                 this.msg = res.data.msg

@@ -78,7 +78,7 @@
         },
         methods:{
             getUserInfo(){
-                this.$axios.get('/user-server//getUser/name',{
+                this.$axios.get('/employee-admin-server/user/getUser',{
                             params:{
                                 username: this.userInfo.user.username
                             }

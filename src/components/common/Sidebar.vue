@@ -41,7 +41,7 @@
                     {
                         icon: 'iconfont icon-wen-home',
                         index: 'index',
-                        title: '系统首页'
+                        title: '用户信息'
                     },
                     {
                         icon: 'iconfont icon-wen-team',
