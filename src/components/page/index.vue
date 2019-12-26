@@ -2,56 +2,52 @@
     <div class="page-my-info">
         <!-- 用户头像 -->
         <div class="user-info-face">
-            <Upload ref="upload" :format="['jpg','jpeg','png']" :max-size="2048" multiple
-                action="//jsonplaceholder.typicode.com/posts/" style="display: inline-block;border-radius: 50%;">
-                <div style="width: 100px;height:100px;line-height: 100px;float: left;">
-                    <img v-bind:src="userInfo.user.face" alt="图片被怪物吃辣">
-                </div>
-            </Upload>
+            <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false"
+                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <img v-if="userInfo.userface" :src="userInfo.userface" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
         </div>
         <div class="user-info-form">
-            <Form :model="formItem" :label-width="110">
-                <FormItem label="昵称" class="formitem">
-                    <Input v-model="userInfo.user.username" size="large" v-bind:placeholder="userInfo.username" style="width: 180px;float: left;margin-left: 15px;"></Input>
-                </FormItem>
-                <FormItem label="绑定手机号" class="formitem">
-                    <!-- <Input v-model="formItem.input" v-bind:placeholder="user.name"></Input> -->
+            <el-form ref="form" :model="formItem" label-width="110px">
+                <el-form-item label="昵称" class="formitem">
+                    <el-input v-model="userInfo.username" size="large" v-bind:placeholder="userInfo.username" style="width: 180px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="绑定手机号" class="formitem">
+                    <el-input v-model="userInfo.phone" v-bind:placeholder="userInfo.username" style="width: 180px;float: left;margin-left: 15px;"></el-input>
                     <div style="float: left;font-size: 14px;color: #CCD0D7;margin-left: 15px;" @click="showPhone">
                         <span v-if=" userInfo.phone == null ">未绑定手机号</span>
                         <span v-else-if="isShow">{{userInfo.phone}}</span>
                         <span v-else>{{userInfo.userPhone}}</span>
                     </div>
-                </FormItem>
-                <FormItem label="绑定邮箱" class="formitem">
+                </el-form-item>
+                <el-form-item label="绑定邮箱" class="formitem">
+                    <el-input v-model="userInfo.email" v-bind:placeholder="userInfo.email" style="width: 180px;float: left;margin-left: 15px;"></el-input>
                     <div style="float: left;font-size: 14px;color: #CCD0D7;margin-left: 15px;">
                         <span v-if=" userInfo.email == null ">未绑定邮箱</span>
                         <span v-else>{{userInfo.email}}</span>
                     </div>
-                </FormItem>
-                <FormItem label="生日" class="formitem">
-                    <Row>
-                        <Col span="11">
-                            <DatePicker v-if="userInfo.user.birthday == null" type="date" placeholder="不想告诉其他人" :value="chooseDate" @on-change="changeDate" :clearable="isClear"></DatePicker>
-                            <DatePicker v-else type="date" :placeholder="userInfo.user.birthday" :value="chooseDate" @on-change="changeDate" :clearable="isClear"></DatePicker>
-                        </Col>
-                    </Row>
-                </FormItem>
-                <FormItem label="性别" class="formitem">
-                    <RadioGroup v-model="userInfo.userSex" style="float: left;margin-left: 15px;">
-                        <Radio label="男">男</Radio>
-                        <Radio label="女">女</Radio>
-                        <Radio label="保密">保密</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem label="签名" class="formitem">
-                    <Input v-model="userInfo.user.signature" type="textarea" :autosize="{minRows: 3,maxRows: 4}" v-bind:maxlength="maxLen" placeholder="说出你想说的吧" style="float: left;margin-left: 15px;width: 380px;"></Input>
-                </FormItem>
-                <div style="margin-left: 150px;">
-                    <FormItem>
-                        <Button type="primary" size="large" @click="toSave">保存修改</Button>
-                    </FormItem>
+                </el-form-item>
+                <el-form-item label="出生日期" class="formitem">
+                    <el-date-picker  v-if="userInfo.birthday == null" v-model="userInfo.birthday" type="date" placeholder="不想告诉其他人" :value="chooseDate" @on-change="changeDate" :clearable="isClear" />
+                    <el-date-picker  v-else v-model="userInfo.birthday" type="date" :placeholder="userInfo.birthday" :value="chooseDate" @on-change="changeDate" :clearable="isClear" />
+                </el-form-item>
+                <el-form-item label="性别" class="formitem">
+                    <el-radio-group v-model="userInfo.sex" style="margin-left: 15px;">
+                        <el-radio label="男">男</el-radio>
+                        <el-radio label="女">女</el-radio>
+                        <el-radio label="保密">保密</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="签名" class="formitem">
+                    <el-input v-model="userInfo.remark" type="textarea" :autosize="{minRows: 3,maxRows: 4}" v-bind:maxlength="maxLen" placeholder="说出你想说的吧" style="float: left;margin-left: 15px;width: 380px;"></el-input>
+                </el-form-item>
+                <div>
+                    <el-form-item style="margin-left: 150px;">
+                        <el-button type="primary" size="large" @click="toSave">保存修改</el-button>
+                    </el-form-item>
                 </div>
-            </Form>
+            </el-form>
         </div>
     </div>
 </template>
@@ -60,42 +56,36 @@
     export default {
         data(){
             return{
+                username: "",
                 isClear: false,
                 isShow: false,
                 isChange: false,
                 chooseDate: '',
                 maxLen: 80,
+                oldUserInfo: {},
+                userInfo: {},
                 formItem: { 
                 }
             }
         },
         created(){
-
+            this.getUserInfo();
         },
         props:{
-            userInfo: {},
             requierd: true
         },
         methods:{
             getUserInfo(){
-                this.$axios.get('/employee-admin-server/user/getUser',{
-                            params:{
-                                username: this.userInfo.user.username
+                this.$axios.post('/employee-admin-server/user/getUser',{
+                            username: localStorage.getItem('employee_username')
+                        }).then((res)=>{
+                            if(res.data.code == 200){
+                                this.isChange = true
+                                this.userInfo = res.data.data
+                                this.oldUserInfo = res.data.data
+                            }else{
+                                this.$message.error(data.data.msg);
                             }
-                        }).then((data)=>{
-                        if(data.data.status == 1){
-                            this.isChange = true
-                            this.userInfo.userName = this.userInfo.user.username
-                            this.verifyOther()
-                            this.updateData()
-                        }else{
-                            this.isChange = false
-                            this.userInfo.user.username = this.userInfo.userName
-                            this.$Notice.error({
-                                title: '提示',
-                                desc: data.data.msg
-                            })
-                        }
                     })
             },
             toSave(){
@@ -103,10 +93,8 @@
                 // 还要考虑用户再更改用户名的时候，是否重名
                 if(this.userInfo.userName != this.userInfo.user.username){
                     // 进行数据库进行查询是否重名
-                    this.$axios.get('/user-server/user/register',{
-                            params:{
-                                username: this.userInfo.user.username
-                            }
+                    this.$axios.post('/employee-admin-server/user/getUser',{
+                            username: this.oldUserInfo.username
                         }).then((data)=>{
                         if(data.data.status == 1){
                             this.isChange = true
@@ -116,10 +104,7 @@
                         }else{
                             this.isChange = false
                             this.userInfo.user.username = this.userInfo.userName
-                            this.$Notice.error({
-                                title: '提示',
-                                desc: data.data.msg
-                            })
+                            this.$message.error(data.data.msg);
                         }
                     })
                 }else{
@@ -128,59 +113,55 @@
                 }
             },
             verifyOther(){
-                if(this.chooseDate != this.userInfo.user.birthday && this.chooseDate != null && this.chooseDate != ''){
+                if(this.chooseDate != this.oldUserInfo.birthday && this.chooseDate != null && this.chooseDate != ''){
                     this.isChange = true
-                    this.userInfo.user.birthday = this.chooseDate
+                    this.oldUserInfo.birthday = this.chooseDate
                 }
-                if(this.userInfo.userSignature != this.userInfo.user.signature){
+                if(this.userInfo.remark != this.oldUserInfo.remark){
                     this.isChange = true
-                    this.userInfo.userSignature = this.userInfo.user.signature
+                    this.oldUserInfo.remark = this.userInfo.remark
                 }
-                if(this.userInfo.userSex == '保密'){
-                    if(this.userInfo.user.sex != 0){
+                if(this.userInfo.sex == '保密'){
+                    if(this.oldUserInfo.sex != 0){
                         this.isChange = true
                     }
-                    this.userInfo.user.sex = 0
-                }else if(this.userInfo.userSex == '男'){
-                    if(this.userInfo.user.sex != 1){
+                    this.oldUserInfo.sex = 0
+                }else if(this.userInfo.sex == '男'){
+                    if(this.oldUserInfo.sex != 1){
                         this.isChange = true
                     }
-                    this.userInfo.user.sex = 1
+                    this.oldUserInfo.sex = 1
                 }else{
-                    if(this.userInfo.user.sex != 2){
+                    if(this.oldUserInfo.sex != 2){
                         this.isChange = true
                     }
-                    this.userInfo.user.sex = 2
+                    this.oldUserInfo.sex = 2
                 }
             },
             updateData(){
                 if(this.isChange){
-                    this.$axios.put('/user-server/user',{
-                        id: this.userInfo.user.id,
-                        username: this.userInfo.user.username,
-                        birthday: this.userInfo.user.birthday,
-                        sex: this.userInfo.user.sex,
-                        signature: this.userInfo.user.signature
-                    }).then((data)=>{
+                    this.$axios.post('/employee-admin-server/user/updateUser',this.oldUserInfo).then((data)=>{
                         this.isChange = false
                         var data = data.data
                         if(data.status == 1){
-                            this.$Notice.success({
-                                title: '提示',
-                                desc: data.data
-                            })
+                            this.$message({
+                                message: data.data,
+                                type: 'success'
+                            });
                         }else{
-                            this.$Notice.error({
-                                title: '提示',
-                                desc: data.data
-                            })
+                            this.$message({
+                                showClose: true,
+                                message: data.data,
+                                type: 'error'
+                            });
                         }
                     })
                 }else{
-                    this.$Notice.error({
-                        title: '提示',
-                        desc: '请勿提交未修改的信息哦'
-                    })
+                    this.$message({
+                        showClose: true,
+                        message: '请勿提交未修改的信息哦',
+                        type: 'error'
+                    });
                 }
             },
             changeDate(date){
@@ -192,17 +173,60 @@
                 }else{
                     this.isShow = true
                 }
+            },
+            /** 头像上传 */
+            handleAvatarSuccess(res, file) {
+                this.userInfo.userface = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
             }
         }
     }
 </script>
 
 
-<style scoped>
+<style>
     .user-info-face{
         float: left;
         margin-left: 120px;
         margin-top: 30px;
+    }
+    /** 用户头像上传 */
+    .el-upload--text {
+        width: 178px;
+        height: 178px;
+    }
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
     }
     .user-info-form{
         float: left;
@@ -212,10 +236,5 @@
     }
     .formitem > :first-child{
         font-size: 14px;
-    }
-    .user-info-face img{
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
     }
 </style>

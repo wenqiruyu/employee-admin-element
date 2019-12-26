@@ -83,6 +83,7 @@ export default new Router({
                 // },
                 {
                     path: '/index',
+                    name: 'index',
                     component: resolve => require(['../components/page/index.vue'], resolve),
                     meta: { title: '系统首页' }
                 },
