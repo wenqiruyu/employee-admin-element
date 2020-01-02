@@ -12,7 +12,6 @@
                 </transition>
             </div>
         </div>
-        <!-- <v-footer></v-footer> -->
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="logo">书斋在线书店后台管理系统</div>
+        <div class="logo">员工信息管理平台</div>
         <!-- 折叠按钮 -->
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
@@ -24,12 +24,6 @@
                 </div> -->
                 <!-- 用户头像 -->
                 <div class="user-avator"><img src="../../assets/img/img.jpg"></div>
-                <!-- <div>
-                    <span class="el-dropdown-link">
-                        {{username}}
-                    </span>
-                    <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
-                </div> -->
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
@@ -131,7 +125,7 @@
     }
     .header .logo{
         float: left;
-        width:250px;
+        width:195px;
         line-height: 70px;
     }
     .header-right{
