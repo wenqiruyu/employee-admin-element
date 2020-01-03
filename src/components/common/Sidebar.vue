@@ -3,20 +3,22 @@
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
-                <template v-if="item.subs">
+                <template v-if="item.subMenu">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                         </template>
-                        <template v-for="subItem in item.subs">
-                            <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
-                                <template slot="title">{{ subItem.title }}</template>
-                                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
+
+                        <template v-for="subItem in item.subMenu">
+                            <!--如果存在三层-->
+                            <el-submenu v-if="subItem.subMenu" :index="subItem.subIndex" :key="subItem.subIndex">
+                                <template slot="title">{{ subItem.subTitle }}</template>
+                                <el-menu-item v-for="(threeItem,i) in subItem.subMenu" :key="i" :index="threeItem.index">
                                     {{ threeItem.title }}
                                 </el-menu-item>
                             </el-submenu>
-                            <el-menu-item v-else :index="subItem.index" :key="subItem.index">
-                                {{ subItem.title }}
+                            <el-menu-item v-else :index="subItem.subIndex" :key="subItem.subIndex">
+                                {{ subItem.subTitle }}
                             </el-menu-item>
                         </template>
                     </el-submenu>
@@ -37,69 +39,7 @@
         data() {
             return {
                 collapse: false,
-                items: [
-                    {
-                        icon: 'iconfont icon-wen-home',
-                        index: 'index',
-                        title: '用户信息'
-                    },
-                    {
-                        icon: 'iconfont icon-wen-team',
-                        index: 'user',
-                        title: '会员管理',
-                        subs: [
-                            {
-                                index: 'userList',
-                                title: '会员列表',
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'iconfont icon-wen-book',
-                        index: 'book',
-                        title: '图书管理',
-                        subs: [
-                            {
-                                index: 'bookList',
-                                title: '图书列表',
-                            },
-                            {
-                                index: 'addBook',
-                                title: '图书上架',
-                            },
-                            {
-                                index: 'bookDetail',
-                                title: '图书详情',
-                            },
-                            {
-                                index: 'managerRecommend',
-                                title: '店长推荐',
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'iconfont icon-wen-lihuoshangjia',
-                        index: 'order',
-                        title: '订单管理',
-                        subs: [
-                            {
-                                index: 'orderList',
-                                title: '订单列表',
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'iconfont icon-wen-lihuoshangjia',
-                        index: 'chat',
-                        title: '聊天室',
-                        subs: [
-                            {
-                                index: 'weChat',
-                                title: '在线聊天',
-                            }
-                        ]
-                    }
-                ]
+                items: null
             }
         },
         computed:{
@@ -108,10 +48,27 @@
             }
         },
         created(){
+            // 获取菜单列表
+            this.getUserMenus()
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
+        },
+        methods: {
+            getUserMenus(){
+                this.$axios.post('/employee-admin-server/menu/getMenu', {
+                    username: localStorage.getItem('employee_username')
+                }).then((res)=>{
+                        console.log(res)
+                        if(res.data.code == 200){
+                            this.items = res.data.data
+                        }else{
+                            this.$message.error(data.data.msg);
+                        }
+                    }
+                )
+            }
         }
     }
 </script>

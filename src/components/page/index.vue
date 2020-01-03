@@ -5,7 +5,8 @@
             <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false"
                     :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="userInfo.userface" :src="userInfo.userface" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <img v-else src="../../assets/img/default_face.jpg" class="avatar">
+<!--                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
             </el-upload>
         </div>
         <div class="user-info-form">
@@ -64,7 +65,7 @@
                 maxLen: 80,
                 oldUserInfo: {},
                 userInfo: {},
-                formItem: { 
+                formItem: {
                 }
             }
         },

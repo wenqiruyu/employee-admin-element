@@ -14,73 +14,6 @@ export default new Router({
             component: resolve => require(['../components/common/Home.vue'], resolve),
             meta: { title: '自述文件' },
             children:[
-                // {
-                //     path: '/dashboard',
-                //     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
-                //     meta: { title: '系统首页' }
-                // },
-                // {
-                //     path: '/icon',
-                //     component: resolve => require(['../components/page/Icon.vue'], resolve),
-                //     meta: { title: '自定义图标' }
-                // },
-                // {
-                //     path: '/table',
-                //     component: resolve => require(['../components/page/BaseTable.vue'], resolve),
-                //     meta: { title: '基础表格' }
-                // },
-                // {
-                //     path: '/tabs',
-                //     component: resolve => require(['../components/page/Tabs.vue'], resolve),
-                //     meta: { title: 'tab选项卡' }
-                // },
-                // {
-                //     path: '/form',
-                //     component: resolve => require(['../components/page/BaseForm.vue'], resolve),
-                //     meta: { title: '基本表单' }
-                // },
-                // {
-                //     // 富文本编辑器组件
-                //     path: '/editor',
-                //     component: resolve => require(['../components/page/VueEditor.vue'], resolve),
-                //     meta: { title: '富文本编辑器' }
-                // },
-                // {
-                //     // markdown组件
-                //     path: '/markdown',
-                //     component: resolve => require(['../components/page/Markdown.vue'], resolve),
-                //     meta: { title: 'markdown编辑器' }    
-                // },
-                // {
-                //     // 图片上传组件
-                //     path: '/upload',
-                //     component: resolve => require(['../components/page/Upload.vue'], resolve),
-                //     meta: { title: '文件上传' }   
-                // },
-                // {
-                //     // vue-schart组件
-                //     path: '/charts',
-                //     component: resolve => require(['../components/page/BaseCharts.vue'], resolve),
-                //     meta: { title: 'schart图表' }
-                // },
-                // {
-                //     // 拖拽列表组件
-                //     path: '/drag',
-                //     component: resolve => require(['../components/page/DragList.vue'], resolve),
-                //     meta: { title: '拖拽列表' }
-                // },
-                // {
-                //     // 拖拽Dialog组件
-                //     path: '/dialog',
-                //     component: resolve => require(['../components/page/DragDialog.vue'], resolve),
-                //     meta: { title: '拖拽弹框' }
-                // },
-                // {
-                //     // 权限页面
-                //     path: '/permission',
-                //     component: resolve => require(['../components/page/Permission.vue'], resolve),
-                //     meta: { title: '权限测试', permission: true }
-                // },
                 {
                     path: '/index',
                     name: 'index',
@@ -88,39 +21,19 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/userList',
-                    component: resolve => require(['../components/page/userList.vue'], resolve),
-                    meta: { title: '会员列表' }
+                    path: '/wagesGrant',
+                    component: resolve => require(['../components/page/wagesGrant.vue'], resolve),
+                    meta: { title: '发放薪资' }
                 },
                 {
-                    path: '/bookList',
-                    component: resolve => require(['../components/page/bookList.vue'], resolve),
-                    meta: { title: '图书列表' }
+                    path: '/wagesQuery',
+                    component: resolve => require(['../components/page/wagesQuery.vue'], resolve),
+                    meta: { title: '薪资查询' }
                 },
                 {
-                    path: '/addBook',
-                    component: resolve => require(['../components/page/addBook.vue'], resolve),
-                    meta: { title: '图书上架' }
-                },
-                {
-                    path: '/bookDetail',
-                    component: resolve => require(['../components/page/bookDetail.vue'], resolve),
-                    meta: { title: '图书详情' }
-                },
-                {
-                    path: '/addBookDetail',
-                    component: resolve => require(['../components/page/addBookDetail.vue'], resolve),
-                    meta: { title: '添加详情' }
-                },
-                {
-                    path: '/orderList',
-                    component: resolve => require(['../components/page/orderList.vue'], resolve),
-                    meta: { title: '订单列表' }
-                },
-                {
-                    path: '/managerRecommend',
-                    component: resolve => require(['../components/page/managerRecommend.vue'], resolve),
-                    meta: { title: '店长推荐' }
+                    path: '/wagesChange',
+                    component: resolve => require(['../components/page/wagesChange.vue'], resolve),
+                    meta: { title: '薪资变更' }
                 },
                 {
                     path: '/weChat',
