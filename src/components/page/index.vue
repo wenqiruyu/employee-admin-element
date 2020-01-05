@@ -6,7 +6,6 @@
                     :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="userInfo.userface" :src="userInfo.userface" class="avatar">
                     <img v-else src="../../assets/img/default_face.jpg" class="avatar">
-<!--                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
             </el-upload>
         </div>
         <div class="user-info-form">
@@ -15,11 +14,11 @@
                     <el-input v-model="userInfo.username" size="large" v-bind:placeholder="userInfo.username" style="width: 180px;float: left;margin-left: 15px;"></el-input>
                 </el-form-item>
                 <el-form-item label="绑定手机号" class="formitem">
-                    <el-input v-model="userInfo.phone" v-bind:placeholder="userInfo.username" style="width: 180px;float: left;margin-left: 15px;"></el-input>
+                    <el-input v-model="userInfo.phone" v-bind:placeholder="userInfo.phone" style="width: 180px;float: left;margin-left: 15px;"></el-input>
                     <div style="float: left;font-size: 14px;color: #CCD0D7;margin-left: 15px;" @click="showPhone">
                         <span v-if=" userInfo.phone == null ">未绑定手机号</span>
                         <span v-else-if="isShow">{{userInfo.phone}}</span>
-                        <span v-else>{{userInfo.userPhone}}</span>
+                        <span v-else>{{userInfo.phone}}</span>
                     </div>
                 </el-form-item>
                 <el-form-item label="绑定邮箱" class="formitem">
@@ -30,14 +29,14 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="出生日期" class="formitem">
-                    <el-date-picker  v-if="userInfo.birthday == null" v-model="userInfo.birthday" type="date" placeholder="不想告诉其他人" :value="chooseDate" @on-change="changeDate" :clearable="isClear" />
-                    <el-date-picker  v-else v-model="userInfo.birthday" type="date" :placeholder="userInfo.birthday" :value="chooseDate" @on-change="changeDate" :clearable="isClear" />
+                    <el-date-picker  v-if="userInfo.birthday == null" v-model="userInfo.birthday" value-format="yyyy-MM-dd" type="date" placeholder="不想告诉其他人" :value="chooseDate" @on-change="changeDate" :clearable="isClear" style="width: 180px;float: left;margin-left: 15px;"/>
+                    <el-date-picker  v-else v-model="userInfo.birthday" type="date" value-format="yyyy-MM-dd" v-bind:placeholder="userInfo.birthday" :value="chooseDate" @on-change="changeDate" :clearable="isClear" style="width: 180px;float: left;margin-left: 15px;"/>
                 </el-form-item>
                 <el-form-item label="性别" class="formitem">
                     <el-radio-group v-model="userInfo.sex" style="margin-left: 15px;">
-                        <el-radio label="男">男</el-radio>
-                        <el-radio label="女">女</el-radio>
-                        <el-radio label="保密">保密</el-radio>
+                        <el-radio :label="1">男</el-radio>
+                        <el-radio :label="0">女</el-radio>
+                        <el-radio :label="2">保密</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="签名" class="formitem">
@@ -92,19 +91,19 @@
             toSave(){
                 var isShowMsg = true
                 // 还要考虑用户再更改用户名的时候，是否重名
-                if(this.userInfo.userName != this.userInfo.user.username){
+                if(this.userInfo.username != this.oldUserInfo.username){
                     // 进行数据库进行查询是否重名
                     this.$axios.post('/employee-admin-server/user/getUser',{
-                            username: this.oldUserInfo.username
+                            username: this.userInfo.username
                         }).then((data)=>{
-                        if(data.data.status == 1){
+                        if(data.data.code == 200){
                             this.isChange = true
-                            this.userInfo.userName = this.userInfo.user.username
+                            this.userInfo.username = this.userInfo.user.username
                             this.verifyOther()
                             this.updateData()
                         }else{
                             this.isChange = false
-                            this.userInfo.user.username = this.userInfo.userName
+                            this.userInfo.user.username = this.userInfo.username
                             this.$message.error(data.data.msg);
                         }
                     })
@@ -122,7 +121,7 @@
                     this.isChange = true
                     this.oldUserInfo.remark = this.userInfo.remark
                 }
-                if(this.userInfo.sex == '保密'){
+                if(this.userInfo.sex == '女'){
                     if(this.oldUserInfo.sex != 0){
                         this.isChange = true
                     }
@@ -141,10 +140,11 @@
             },
             updateData(){
                 if(this.isChange){
-                    this.$axios.post('/employee-admin-server/user/updateUser',this.oldUserInfo).then((data)=>{
-                        this.isChange = false
+                    console.log(this.userInfo)
+                    this.$axios.post('/employee-admin-server/user/updateUser',this.userInfo).then((data)=>{
                         var data = data.data
-                        if(data.status == 1){
+                        if(data.code == 200){
+                            this.isChange = false
                             this.$message({
                                 message: data.data,
                                 type: 'success'

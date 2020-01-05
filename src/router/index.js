@@ -21,6 +21,11 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/userList',
+                    component: resolve => require(['../components/page/userList.vue'], resolve),
+                    meta: { title: '用户列表' }
+                },
+                {
                     path: '/wagesGrant',
                     component: resolve => require(['../components/page/wagesGrant.vue'], resolve),
                     meta: { title: '发放薪资' }
