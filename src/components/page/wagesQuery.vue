@@ -17,27 +17,28 @@
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="empId" label="员工号" width="180">
+        <!-- <el-table-column type="selection" width="55" align="center">
+        </el-table-column> -->
+        <el-table-column prop="empId" label="员工号" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="empName" label="员工名" width="100">
+        <el-table-column prop="empName" label="员工名" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="period" label="薪资发放期间" width="120">
+        <el-table-column prop="period" label="薪资发放期间" sortable width="180" align="center">
         </el-table-column>
-        <el-table-column prop="baseWages" label="基本工资" sortable width="110">
+        <el-table-column prop="baseWages" label="基本工资（元）" width="180" align="center">
         </el-table-column>
-        <el-table-column prop="subsidy" label="补贴" sortable width="80">
+        <el-table-column prop="subsidy" label="补贴（元）" width="180" align="center">
         </el-table-column>
-        <el-table-column prop="tax" label="税前扣款" width="60">
+        <el-table-column prop="tax" label="税前扣款（元）" width="180" align="center">
         </el-table-column>
-        <el-table-column prop="realWages" label="实发工资" sortable width="80" sortable>
+        <el-table-column prop="realWages" label="实发工资（元）" align="center">
         </el-table-column>
-        <el-table-column label="操作" width="160" align="center">
+        <!-- <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <el-button type="text" icon="iconfont icon-wen-update1" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="text" icon="iconfont icon-wen-custom-delete" class="red" @click="handleDelete(scope.$index, scope.row)">下架</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <div class="pagination">
         <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">

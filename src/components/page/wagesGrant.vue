@@ -2,8 +2,8 @@
   <div class="table">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item><i class="iconfont icon-wen-book"></i> 图书管理</el-breadcrumb-item>
-        <el-breadcrumb-item>图书列表</el-breadcrumb-item>
+        <el-breadcrumb-item><i class="iconfont icon-wen-book"></i> 薪资管理</el-breadcrumb-item>
+        <el-breadcrumb-item>发放薪资</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
@@ -16,9 +16,19 @@
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
       </div>
+      <div>
+        <div class="block">
+          <span class="demonstration">月</span>
+          <el-date-picker
+            v-model="wagesGrantTime"
+            type="month"
+            placeholder="请选择薪资发放月份">
+          </el-date-picker>
+        </div>
+      </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="name" label="书名" width="180">
+        <el-table-column prop="name" label="职位" width="180">
         </el-table-column>
         <el-table-column prop="author" label="作者" width="100">
         </el-table-column>
@@ -86,6 +96,7 @@
         data() {
             return {
                 url: './vuetable.json',
+                wagesGrantTime: '',
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],

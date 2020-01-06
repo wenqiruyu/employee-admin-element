@@ -79,6 +79,7 @@
                     if(res.data.code == 200){
                         if(res.data.data.startTime != null){
                             this.isStart = true
+                            this.isEnd = false
                         }
                     }else{
                         this.isStart = true
@@ -88,27 +89,31 @@
             },
             // 员工签到
             toStartAttendance(){
-                this.$axios.post('/employee-admin-server/attendance/getWorkAttendance',{
+                this.$axios.post('/employee-admin-server/attendance/addWorkAttendance',{
                     username: localStorage.getItem('employee_username')
                 }).then((res)=>{
                     if(res.data.code == 200){
-                        this.isChange = true
-                        this.userInfo = res.data.data
-                        this.oldUserInfo = res.data.data
+                        this.isStart = true
+                        this.isEnd = false
+                        this.$message({
+                            message: '已成功签到，今天是充满希望的一天',
+                            type: 'success'
+                        })
                     }else{
                         this.$message.error(data.data.msg);
                     }
                 })
             },
             // 员工签退
-            toStartAttendance(){
-                this.$axios.post('/employee-admin-server/user/getUser',{
+            toEndAttendance(){
+                this.$axios.post('/employee-admin-server/attendance/addEndWorkAttendance',{
                     username: localStorage.getItem('employee_username')
                 }).then((res)=>{
                     if(res.data.code == 200){
-                        this.isChange = true
-                        this.userInfo = res.data.data
-                        this.oldUserInfo = res.data.data
+                        this.$message({
+                            message: '已成功签退，今天您辛苦了',
+                            type: 'success'
+                        })
                     }else{
                         this.$message.error(data.data.msg);
                     }
