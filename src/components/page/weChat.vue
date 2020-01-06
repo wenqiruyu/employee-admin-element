@@ -13,15 +13,15 @@
                 <!-- 处于和我聊天状态用户列表 -->
                 <div class="now-chat-list">
                     <el-card class="now-chat-list-card">
-                        
+
                     </el-card>
                 </div>
                 <div class="chat-center">
                     <!-- 当前聊天状态用户信息 -->
                     <div class="chat-user-info">
                         <el-card class="chat-user-info-card">
-                            
-                            
+
+
                         </el-card>
                     </div>
                     <!-- 聊天信息展示位置 -->
@@ -63,8 +63,8 @@
                 <!-- 用户好友列表 -->
                 <div class="chat-user-list">
                     <el-card class="chat-user-list-card">
-                        
-                        
+
+
                     </el-card>
                 </div>
             </div>
@@ -100,14 +100,14 @@
                     if(result.code == 200){
                         this.chatAllMessage.push(result.data)
                     }
-                    console.log(evt.data)                    
+                    console.log(evt.data)
                     console.log('数据已接收...')
                 }
 
                 this.webSocket.onclose = function () {
                     console.log('WebSocket连接已关闭...')
                 }
-                
+
                 window.onbeforeunload = function() {
                     this.websocket.close();
                 }

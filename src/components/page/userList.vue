@@ -2,8 +2,8 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 会员管理</el-breadcrumb-item>
-                <el-breadcrumb-item>会员列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 员工管理</el-breadcrumb-item>
+                <el-breadcrumb-item>员工列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -20,17 +20,15 @@
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="username" label="用户名" width="180">
                 </el-table-column>
-                <el-table-column prop="email" label="邮箱" width="150" :formatter="formatEmail">
-                </el-table-column>
-                <el-table-column prop="qq" label="QQ" width="120" :formatter="formatQQ">
+                <el-table-column prop="email" label="邮箱" width="180" :formatter="formatEmail">
                 </el-table-column>
                 <el-table-column prop="phone" label="手机号" width="120">
                 </el-table-column>
                 <el-table-column prop="sex" label="性别" width="100" :formatter="formatSex">
                 </el-table-column>
-                <el-table-column prop="birthday" label="生日" :formatter="formatBirthday">
+                <el-table-column prop="birthday" label="生日" width="100" :formatter="formatBirthday">
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建日期" sortable width="160" :formatter="formatDate">
+                <el-table-column prop="province" label="户籍所在地" :formatter="formatProvince">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -160,17 +158,16 @@
             formatEmail(row, column){
                 return row.email === null ? '未绑定' : row.email;
             },
-            formatQQ(row, column){
-                return row.qq === null ? '未绑定' : row.qq;
-            },
             formatBirthday(row, column){
                 return row.birthday === null ? '未绑定' : row.birthday;
             },
             formatSex(row, column) {
                 return row.sex === 1 ? '男' : row.sex === 2 ? '女' : '保密';
             },
-            formatDate(row, column){
-                return row.createTime;
+            formatProvince(row, column){
+
+                return (row.province === null || row.city === null || row.county == null) ? '请提醒员工提供正确户籍信息' :
+                    (row.province + " " + row.city + " " + row.county);
             },
             filterTag(value, row) {
                 return row.tag === value;

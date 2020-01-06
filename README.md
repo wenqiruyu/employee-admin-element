@@ -1,4 +1,4 @@
-# venus-admin-element
+# employee-admin-element
 
 > A Vue.js project
 

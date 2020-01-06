@@ -18,23 +18,19 @@
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="name" label="书名" width="180">
+        <el-table-column prop="empId" label="员工号" width="180">
         </el-table-column>
-        <el-table-column prop="author" label="作者" width="100">
+        <el-table-column prop="empName" label="员工名" width="100">
         </el-table-column>
-        <el-table-column prop="press" label="出版社" width="120">
+        <el-table-column prop="period" label="薪资发放期间" width="120">
         </el-table-column>
-        <el-table-column prop="publishDate" label="出版时间" sortable width="110">
+        <el-table-column prop="baseWages" label="基本工资" sortable width="110">
         </el-table-column>
-        <el-table-column prop="price" label="价格" sortable width="80">
+        <el-table-column prop="subsidy" label="补贴" sortable width="80">
         </el-table-column>
-        <el-table-column prop="stock" label="库存" width="60">
+        <el-table-column prop="tax" label="税前扣款" width="60">
         </el-table-column>
-        <el-table-column prop="grade" label="评分" sortable width="80" sortable>
-        </el-table-column>
-        <el-table-column prop="commentNum" label="评论" sortable width="80">
-        </el-table-column>
-        <el-table-column prop="createTime" label="上架时间" sortable width="160">
+        <el-table-column prop="realWages" label="实发工资" sortable width="80" sortable>
         </el-table-column>
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
@@ -105,10 +101,8 @@
         },
         created() {
             var self = this
-            this.$axios.post("/employee-admin-server/menu/getMenu", {
-                username: localStorage.getItem('employee_username')
-            }).then((res) => {
-                if(res.data.status == 1){
+            this.$axios.post("/employee-admin-server/wages/getAllWages").then((res) => {
+                if(res.data.code == 200){
                     // 数组复制
                     self.tableData = res.data.data.slice()
                     console.log(res.data.data)

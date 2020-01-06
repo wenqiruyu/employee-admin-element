@@ -7,6 +7,11 @@
         </div>
         <div class="header-right">
             <div class="header-user-con">
+              <!-- 员工签到签退-->
+              <div>
+                <el-button type="primary" round size="small" :disabled="isStart" @click="toStartAttendance">签到</el-button>
+                <el-button type="primary" round size="small" :disabled="isEnd" @click="toEndAttendance">签退</el-button>
+              </div>
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
@@ -48,11 +53,16 @@
     export default {
         data() {
             return {
+                isStart: false,
+                isEnd: true,
                 collapse: false,
                 fullscreen: false,
                 name: 'linxin',
                 message: 2
             }
+        },
+        created(){
+            this.getEmpWorkAttendance()
         },
         computed:{
             username(){
@@ -61,6 +71,49 @@
             }
         },
         methods:{
+            // 获取员工签到信息
+            getEmpWorkAttendance(){
+                this.$axios.post('/employee-admin-server/attendance/getWorkAttendance',{
+                    username: localStorage.getItem('employee_username')
+                }).then((res)=>{
+                    if(res.data.code == 200){
+                        if(res.data.data.startTime != null){
+                            this.isStart = true
+                        }
+                    }else{
+                        this.isStart = true
+                        this.$message.error("签到信息出现异常，请联系管理员进行处理");
+                    }
+                })
+            },
+            // 员工签到
+            toStartAttendance(){
+                this.$axios.post('/employee-admin-server/attendance/getWorkAttendance',{
+                    username: localStorage.getItem('employee_username')
+                }).then((res)=>{
+                    if(res.data.code == 200){
+                        this.isChange = true
+                        this.userInfo = res.data.data
+                        this.oldUserInfo = res.data.data
+                    }else{
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
+            // 员工签退
+            toStartAttendance(){
+                this.$axios.post('/employee-admin-server/user/getUser',{
+                    username: localStorage.getItem('employee_username')
+                }).then((res)=>{
+                    if(res.data.code == 200){
+                        this.isChange = true
+                        this.userInfo = res.data.data
+                        this.oldUserInfo = res.data.data
+                    }else{
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if(command == 'loginout'){
