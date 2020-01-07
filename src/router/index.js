@@ -27,6 +27,21 @@ export default new Router({
                     meta: { title: '用户列表' }
                 },
                 {
+                  path: '/registerUser',
+                  component: resolve => require(['../components/page/registerUser.vue'], resolve),
+                  meta: { title: '注册用户' }
+                },
+                {
+                  path: '/registerEmp',
+                  component: resolve => require(['../components/page/registerEmp.vue'], resolve),
+                  meta: { title: '员工入职' }
+                },
+                {
+                  path: '/deptList',
+                  component: resolve => require(['../components/page/deptList.vue'], resolve),
+                  meta: { title: '部门一览' }
+                },
+                {
                     path: '/wagesGrant',
                     component: resolve => require(['../components/page/wagesGrant.vue'], resolve),
                     meta: { title: '发放薪资' }
