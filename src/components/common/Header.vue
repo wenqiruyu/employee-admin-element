@@ -9,8 +9,8 @@
             <div class="header-user-con">
               <!-- 员工签到签退-->
               <div>
-                <el-button type="primary" round size="small" :disabled="isStart" @click="toStartAttendance">签到</el-button>
-                <el-button type="primary" round size="small" :disabled="isEnd" @click="toEndAttendance">签退</el-button>
+                    <el-button type="primary" round size="small" :disabled="isStart" @click="toStartAttendance">{{startTitle}}</el-button>
+                    <el-button type="primary" round size="small" :disabled="isEnd" @click="toEndAttendance">{{endTitle}}</el-button>
               </div>
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
@@ -53,6 +53,8 @@
     export default {
         data() {
             return {
+                startTitle: '签到',
+                endTitle: '签退',
                 isStart: false,
                 isEnd: true,
                 collapse: false,
@@ -78,8 +80,12 @@
                 }).then((res)=>{
                     if(res.data.code == 200){
                         if(res.data.data.startTime != null){
+                            this.startTitle = '已签到'
                             this.isStart = true
                             this.isEnd = false
+                            if(res.data.data.endTime != null){
+                                this.endTitle = '已签退'
+                            }
                         }
                     }else{
                         this.isStart = true

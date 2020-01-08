@@ -1,150 +1,71 @@
 <template>
-    <div class="register" >
-      <div class="register-form" >
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="密码" prop="pass">
-            <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="年龄" prop="age">
-            <el-input v-model.number="ruleForm.age"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <!--<script>
-            export default {
-                data() {
-                    var checkAge = (rule, value, callback) => {
-                        if (!value) {
-                            return callback(new Error('年龄不能为空'));
-                        }
-                        setTimeout(() => {
-                            if (!Number.isInteger(value)) {
-                                callback(new Error('请输入数字值'));
-                            } else {
-                                if (value < 18) {
-                                    callback(new Error('必须年满18岁'));
-                                } else {
-                                    callback();
-                                }
-                            }
-                        }, 1000);
-                    };
-                    var validatePass = (rule, value, callback) => {
-                        if (value === '') {
-                            callback(new Error('请输入密码'));
-                        } else {
-                            if (this.ruleForm.checkPass !== '') {
-                                this.$refs.ruleForm.validateField('checkPass');
-                            }
-                            callback();
-                        }
-                    };
-                    var validatePass2 = (rule, value, callback) => {
-                        if (value === '') {
-                            callback(new Error('请再次输入密码'));
-                        } else if (value !== this.ruleForm.pass) {
-                            callback(new Error('两次输入密码不一致!'));
-                        } else {
-                            callback();
-                        }
-                    };
-                    return {
-                        ruleForm: {
-                            pass: '',
-                            checkPass: '',
-                            age: ''
-                        },
-                        rules: {
-                            pass: [
-                                { validator: validatePass, trigger: 'blur' }
-                            ],
-                            checkPass: [
-                                { validator: validatePass2, trigger: 'blur' }
-                            ],
-                            age: [
-                                { validator: checkAge, trigger: 'blur' }
-                            ]
-                        }
-                    };
-                },
-                methods: {
-                    submitForm(formName) {
-                        this.$refs[formName].validate((valid) => {
-                            if (valid) {
-                                alert('submit!');
-                            } else {
-                                console.log('error submit!!');
-                                return false;
-                            }
-                        });
-                    },
-                    resetForm(formName) {
-                        this.$refs[formName].resetFields();
-                    }
-                }
-            }
-        </script>-->
-        <!-- v-bind:show-message="isShow"是否显示错误提示 -->
-        <!--<Form ref="user" :model="user" :rules="rule">
-          <div>
-            <FormItem prop="username">
-              <Input type="text" size="large" v-model="user.username" placeholder="请输入用户名" clearable>
-                <Icon type="ios-contact" slot="prefix"></Icon>
-              </Input>
-            </FormItem>
-          </div>
-          <div>
-            <FormItem prop="password">
-              <Input v-bind:type="pwdType" size="large" v-model="user.password" placeholder="请输入密码">
-                <Icon type="ios-lock-outline" slot="prefix"></Icon>
-                <Icon v-if="showPwd" type="md-eye" slot="suffix" @click="showPassword"/>
-                <Icon v-else type="md-eye-off" slot="suffix" @click="showPassword"/>
-              </Input>
-            </FormItem>
-          </div>
-          <div>
-            <FormItem prop="phone">
-              <Input type="text" size="large" v-model="user.phone" placeholder="请输入手机号" clearable>
-                <Icon type="md-phone-portrait" slot="prefix"></Icon>
-              </Input>
-            </FormItem>
-          </div>
-          <div>
-            <FormItem>
-              <Row>
-                <Col span="15" v-on:blur="hide()">
-                  <FormItem prop="verify">
-                    <Input type="text" size="large" v-model="user.verify" placeholder="请输入手机验证码" clearable></Input>
-                  </FormItem>
-                </Col>
-                <Col span="6" offset="1">
-                  <FormItem prop="senverify">
-                    &lt;!&ndash; disabled按钮为禁止状态 &ndash;&gt;
-                    <Button type="primary" size="large" v-model="user.sendverify" @click="getVerify()" v-bind:disabled="sty" >获取验证码</Button>
-                  </FormItem>
-                </Col>
-              </Row>
-            </FormItem>
-          </div>
-          <div class="register-from-checkbox">
-            <Checkbox v-model="single">
-              <span>我已阅读并同意<a href="">《书斋交易条款》</a>和<a href="">《书斋社区条款》</a></span>
-            </Checkbox>
-          </div>
-          <div class="register-from-button">
-            <FormItem>
-              <Button type="primary" size="large" @click="handleSubmit('user')" long v-bind:disabled="!single">注册</Button>
-            </FormItem>
-          </div>
-        </Form>-->
+    <div style="margin-top: 80px;">
+        <el-steps :active="active">
+            <el-step title="步骤 1" description=""></el-step>
+            <el-step title="步骤 2" description=""></el-step>
+            <el-step title="步骤 3" description="这段就没那么长了"></el-step>
+        </el-steps>
+        <div class="yingx">
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="500px">
+                <el-form-item label="员工姓名" prop="empName">
+                    <el-input v-model="ruleForm.empName" autocomplete="off" @change="changeName()" style="width: 240px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="员工号" prop="empId">
+                    <el-input v-model="ruleForm.empId" autocomplete="off" :disabled="true" :placeholder="ruleForm.empId" style="width: 240px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="平台用户名" prop="username">
+                    <el-input v-model="ruleForm.username" autocomplete="off" :disabled="true" style="width: 240px;float: left;margin-left: 15px;">
+                        {{this.ruleForm.username}}
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="身份证号" prop="idCard">
+                    <el-input v-model="ruleForm.pass" autocomplete="off" style="width: 240px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="phone">
+                    <el-input v-model="ruleForm.checkPass" autocomplete="off" style="width: 240px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="性别" prop="sex">
+                    <el-radio-group v-model="ruleForm.age" style="margin-left: 15px;">
+                            <el-radio :label="1">男</el-radio>
+                            <el-radio :label="0">女</el-radio>
+                            <el-radio :label="2">保密</el-radio>
+                        </el-radio-group>
+                </el-form-item>
+                <el-form-item label="员工邮箱" prop="email">
+                    <el-input v-model="ruleForm.email" style="width: 240px;float: left;margin-left: 15px;"></el-input>
+                </el-form-item>
+                <el-form-item label="户籍所在地" prop="province">
+                    <div style="float: left;margin-left: 15px;width: 360px;">
+                        <div style="float: left;width: 120px;">
+                            <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
+                                <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+                                    {{ item.label }}
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div style="float: left;width: 120px;">
+                            <el-select v-model="ruleForm.city" placeholder="城市" @change="changeCity">
+                                <el-option v-for="(item,index) in citiesArr" :key="item.value" :value="item.value">
+                                    {{ item.label }}
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div style="float: left;width: 120px;">
+                            <el-select v-model="ruleForm.county" placeholder="区县">
+                                <el-option v-for="(item,index) in countyArr" :key="item.value" :value="item.value">
+                                    {{ item.label }}
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -186,10 +107,20 @@
                 }
             };
             return {
+                active: 1,
+                provinceArr: [],
+                citiesArr: [],
+                countyArr: [],
                 ruleForm: {
+                    empName: '',
+                    empId: '',
+                    username: '',
                     pass: '',
                     checkPass: '',
-                    age: ''
+                    age: '',
+                    province: '',
+                    city: '',
+                    county: ''
                 },
                 rules: {
                     pass: [
@@ -297,13 +228,41 @@
         },*/
         created(){
             this.getEmpId()
+            this.getProvince()
         },
         methods: {
+            getProvince(){
+                this.$axios.get('http://localhost:8080/static/json/provinces.json').then((res) => {
+                    this.provinceArr = res.data.data
+                    console.log(this.provinceArr)
+                })
+            },
+            changeProvince(val){
+                for(var i=0; i<this.provinceArr.length; i++){
+                    if(val == this.provinceArr[i].value ){
+                        this.citiesArr = this.provinceArr[i].children
+                        this.ruleForm.city = ''
+                        this.ruleForm.county = ''
+                        this.countyArr = []
+                    }
+                }
+            },
+            changeCity(val){
+                for(var i=0; i<this.citiesArr.length; i++){
+                    if(val == this.citiesArr[i].value ){
+                        this.countyArr = this.citiesArr[i].children
+                    }
+                }
+            },
             getEmpId(){
                 this.$axios.post("/employee-admin-server/emp/getEmpId").then((res)=>{
                     console.log(res.data.data)
                     if(res.data.code == 200){
-                        this.empId = res.data.data.empId
+                        if(res.data.data.empId != null){
+                            this.ruleForm.empId = res.data.data.empId
+                        }else{
+                            this.$message.error("员工号获取失败，请联系开发人员进行排查问题")
+                        }
                     }else{
                         this.$message.error(res.data.msg)
                     }
@@ -339,8 +298,12 @@
                     }
                 })
             },
-            toLogin(){
-                this.$router.push({path: '/login'})
+            changeName(){
+                this.ruleForm.username = this.ruleForm.empName + this.ruleForm.empId
+                console.log(this.ruleForm.username + "111")
+            },
+            submitForm(){
+                $(yingx).style.display
             },
             handleSubmit(name){
                 var self = this
@@ -382,54 +345,11 @@
     }
 </script>
 
-<style scoped>
+<style>
   .register{
-    margin-top: 10px;
-    margin-left: 30px;
-    margin-right: 30px;
-    height: 550px;
     background-image: url('/src/assets/img/index-bg.jpg');
-    outline: 4px solid #F9F9F9;
   }
-  /* 标题 */
-  .register-title{
-    margin-left: 60px;
-    margin-top:30px;
-    float:left;
-    color: #8A8A8A;
-    font-size: 18px;
-  }
-  .register-toLogin{
-    float: left;
-    margin-top: 30px;
-    margin-left: 1000px;
-    color: #8A8A8A;
-    font-size: 16px;
-  }
-  /* 错误信息提示位置 */
-  .register-remind{
-    width: 200px;
-    height: 20px;
-    float:left;
-    color: red;
-    text-align: left;
-    margin-left: 415px;
-    margin-top: 30px;
-  }
-  .register-form{
-    width:320px;
-    float:left;
-    margin-left:560px;
-    margin-top:10px;
-  }
-  .register-from-checkbox{
-    float: left;
-    margin-bottom: 20px;
-  }
-  Input{
-    height:50px;
-  }
-  .register-footer{
-    float:left;
+  .el-input .el-input--medium .el-input--suffix{
+      width: 60px;
   }
 </style>

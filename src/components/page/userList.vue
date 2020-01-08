@@ -162,7 +162,7 @@
                 return row.birthday === null ? '未绑定' : row.birthday;
             },
             formatSex(row, column) {
-                return row.sex === 1 ? '男' : row.sex === 2 ? '女' : '保密';
+                return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '保密';
             },
             formatProvince(row, column){
 
