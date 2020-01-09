@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">启明星后台管理系统</div>
+            <div class="ms-title">企业员工后台管理系统</div>
             <div class="ms-remind">{{msg}}</div>
             <el-form
                 :model="ruleForm"

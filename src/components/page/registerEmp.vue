@@ -1,15 +1,15 @@
 <template>
-  <div style="margin-top: 100px;">
-    <div style="width: 600px; margin-left: 600px;">
+  <div style="margin-top: 40px;">
+    <div style="width: 600px; margin: 0 auto;">
       <el-steps :active="active">
-        <el-step title="员工基本信息" description=""></el-step>
-        <el-step title="平台用户注册" description=""></el-step>
-        <el-step title="补充员工信息" description=""></el-step>
+        <el-step title="员工基本信息" description="此处信息必填"></el-step>
+        <el-step title="平台用户注册" description="性别、邮箱信息选填"></el-step>
+        <el-step title="补充员工信息" description="此处信息选填"></el-step>
       </el-steps>
     </div>
-    <div style="margin-top: 60px;">
-      <div v-if="active == 1">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="750px">
+    <div style="margin-top: 40px;">
+      <div v-if="active == 1" style="width: 600px; margin: 0 auto;">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
           <el-form-item label="员工姓名" prop="empName" style="margin-left: 15px">
             <el-input v-model="ruleForm.empName" @change="changeName()" style="width: 240px;"></el-input>
           </el-form-item>
@@ -48,23 +48,23 @@
               </el-form-item>
             </div>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-form-item style="margin-left: 15px;">
+            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="active == 2">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="500px">
+      <div v-if="active == 2" style="width: 600px; margin: 0 auto;">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
           <el-form-item label="平台用户名" prop="username" style="margin-left: 15px;">
             <el-input v-model="ruleForm.username" autocomplete="off" :disabled="true" style="width: 240px;">
               {{this.ruleForm.username}}
             </el-input>
           </el-form-item>
           <el-form-item label="平台用户密码" prop="password" style="margin-left: 15px;">
-            <el-input v-model="ruleForm.password" autocomplete="off" style="width: 240px;">
-              {{this.ruleForm.username}}
+            <el-input type="password" v-model="ruleForm.password" autocomplete="off" :disabled="true" style="width: 240px;">
+              {{this.ruleForm.password}}
             </el-input>
+            <div style="margin-bottom: -30px;color: #727D81;font-size: 12px;"><span>*新用户默认密码为Ad + 身份证后六位</span></div>
           </el-form-item>
           <el-form-item label="性别" prop="sex">
             <el-radio-group v-model="ruleForm.sex" style="margin-left: 15px;">
@@ -76,33 +76,33 @@
           <el-form-item label="平台用户邮箱" prop="email" style="margin-left: 15px;">
             <el-input v-model="ruleForm.email" style="width: 240px;"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-form-item style="margin-left: 15px;">
+            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
+            <el-button type="primary" @click="backSubmit">上一步</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="active == 3">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="500px">
-          <el-form-item label="紧急联系电话" prop="username" style="margin-left: 15px;">
-            <el-input v-model="ruleForm.username" autocomplete="off" :disabled="true" style="width: 240px;">
-              {{this.ruleForm.username}}
+      <div v-if="active == 3" style="width: 600px; margin: 0 auto;">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
+          <el-form-item label="紧急联系电话" prop="telephone" style="margin-left: 15px;">
+            <el-input v-model="ruleForm.telephone" autocomplete="off" style="width: 222px;">
+              {{this.ruleForm.telephone}}
             </el-input>
           </el-form-item>
-          <el-form-item label="详细户籍地址" prop="password" style="margin-left: 15px;">
-            <el-input v-model="ruleForm.password" autocomplete="off" style="width: 240px;">
-              {{this.ruleForm.username}}
+          <el-form-item label="详细户籍地址" prop="address" style="margin-left: 15px;">
+            <el-input v-model="ruleForm.address" autocomplete="off" style="width: 222px;">
+              {{this.ruleForm.address}}
             </el-input>
           </el-form-item>
-          <el-form-item label="现居住地址" prop="password" style="margin-left: 15px;">
-            <el-input v-model="ruleForm.password" autocomplete="off" style="width: 240px;">
-              {{this.ruleForm.username}}
+          <el-form-item label="现居住地址" prop="currentAddress" style="margin-left: 15px;">
+            <el-input v-model="ruleForm.currentAddress" autocomplete="off" style="width: 222px;">
+              {{this.ruleForm.currentAddress}}
             </el-input>
           </el-form-item>
           <el-form-item label="所属党派">
             <div style="float: left;margin-left: 15px;width: 360px;">
-                <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                  <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+                <el-select v-model="ruleForm.politics" placeholder="选择所属党派">
+                  <el-option v-for="(item,index) in politicsArr" :key="item.value" :value="item.value">
                     {{ item.label }}
                   </el-option>
                 </el-select>
@@ -110,8 +110,8 @@
           </el-form-item>
           <el-form-item label="所属民族">
             <div style="float: left;margin-left: 15px;width: 360px;">
-              <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+              <el-select v-model="ruleForm.national" placeholder="选择所属民族">
+                <el-option v-for="(item,index) in nationalArr" :key="item.value" :value="item.value">
                   {{ item.label }}
                 </el-option>
               </el-select>
@@ -119,8 +119,8 @@
           </el-form-item>
           <el-form-item label="婚姻状态">
             <div style="float: left;margin-left: 15px;width: 360px;">
-              <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+              <el-select v-model="ruleForm.marriage" placeholder="选择婚姻状态">
+                <el-option v-for="(item,index) in marriageArr" :key="item.value" :value="item.value">
                   {{ item.label }}
                 </el-option>
               </el-select>
@@ -128,8 +128,8 @@
           </el-form-item>
           <el-form-item label="个人学历">
             <div style="float: left;margin-left: 15px;width: 360px;">
-              <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+              <el-select v-model="ruleForm.education" placeholder="选择个人学历">
+                <el-option v-for="(item,index) in educationArr" :key="item.value" :value="item.value">
                   {{ item.label }}
                 </el-option>
               </el-select>
@@ -137,7 +137,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <el-button type="primary" @click="backSubmit">上一步</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -201,26 +201,318 @@
                 if (value != '' && !regEmail.test(value)) {
                     callback(new Error('请输入正确的邮箱号'));
                 }
+                if(value == ''){
+                  callback();
+                }
             }
             return {
-                active: 2,
+                active: 1,
                 empId: '',
                 provinceArr: [],
                 citiesArr: [],
                 countyArr: [],
+                politicsArr: [    
+                  {
+                    "value": "群众",
+                    "label": "群众"
+                  },{
+                    "value": "中共党员",
+                    "label": "中共党员"
+                  },{
+                    "value": "无党派民主人士",
+                    "label": "无党派民主人士"
+                  },{
+                    "value": "民革党员",
+                    "label": "民革党员"
+                  },{
+                    "value": "民盟党员",
+                    "label": "民盟党员"
+                  },{
+                    "value": "农工党员",
+                    "label": "农工党员"
+                  },
+                ],
+                nationalArr: [
+                  {
+                    "value": "汉族",
+                    "label": "汉族"
+                  },
+                  {
+                    "value": "蒙古族",
+                    "label": "蒙古族"
+                  },
+                  {
+                    "value": "回族",
+                    "label": "回族"
+                  },
+                  {
+                    "value": "藏族",
+                    "label": "藏族"
+                  },
+                  {
+                    "value": "维吾尔族",
+                    "label": "维吾尔族"
+                  },
+                  {
+                    "value": "苗族",
+                    "label": "苗族"
+                  },
+                  {
+                    "value": "彝族",
+                    "label": "彝族"
+                  },
+                  {
+                    "value": "壮族",
+                    "label": "壮族"
+                  },
+                  {
+                    "value": "布依族",
+                    "label": "布依族"
+                  },
+                  {
+                    "value": "朝鲜族",
+                    "label": "朝鲜族"
+                  },
+                  {
+                    "value": "满族",
+                    "label": "满族"
+                  },
+                  {
+                    "value": "侗族",
+                    "label": "侗族"
+                  },
+                  {
+                    "value": "瑶族",
+                    "label": "瑶族"
+                  },
+                  {
+                    "value": "白族",
+                    "label": "白族"
+                  },
+                  {
+                    "value": "土家族",
+                    "label": "土家族"
+                  },
+                  {
+                    "value": "哈尼族",
+                    "label": "哈尼族"
+                  },
+                  {
+                    "value": "哈萨克族",
+                    "label": "哈萨克族"
+                  },
+                  {
+                    "value": "傣族",
+                    "label": "傣族"
+                  },
+                  {
+                    "value": "黎族",
+                    "label": "黎族"
+                  },
+                  {
+                    "value": "傈僳族",
+                    "label": "傈僳族"
+                  },
+                  {
+                    "value": "佤族",
+                    "label": "佤族"
+                  },
+                  {
+                    "value": "畲族",
+                    "label": "畲族"
+                  },
+                  {
+                    "value": "高山族",
+                    "label": "高山族"
+                  },
+                  {
+                    "value": "拉祜族",
+                    "label": "拉祜族"
+                  },
+                  {
+                    "value": "水族",
+                    "label": "水族"
+                  },
+                  {
+                    "value": "东乡族",
+                    "label": "东乡族"
+                  },
+                  {
+                    "value": "纳西族",
+                    "label": "纳西族"
+                  },
+                  {
+                    "value": "景颇族",
+                    "label": "景颇族"
+                  },
+                  {
+                    "value": "柯尔克孜族",
+                    "label": "柯尔克孜族"
+                  },
+                  {
+                    "value": "土族",
+                    "label": "土族"
+                  },
+                  {
+                    "value": "达斡尔族",
+                    "label": "达斡尔族"
+                  },
+                  {
+                    "value": "仫佬族",
+                    "label": "仫佬族"
+                  },
+                  {
+                    "value": "羌族",
+                    "label": "羌族"
+                  },
+                  {
+                    "value": "布朗族",
+                    "label": "布朗族"
+                  },
+                  {
+                    "value": "撒拉族",
+                    "label": "撒拉族"
+                  },
+                  {
+                    "value": "毛难族",
+                    "label": "毛难族"
+                  },
+                  {
+                    "value": "仡佬族",
+                    "label": "仡佬族"
+                  },
+                  {
+                    "value": "锡伯族",
+                    "label": "锡伯族"
+                  },
+                  {
+                    "value": "阿昌族",
+                    "label": "阿昌族"
+                  },
+                  {
+                    "value": "普米族",
+                    "label": "普米族"
+                  },
+                  {
+                    "value": "塔吉克族",
+                    "label": "塔吉克族"
+                  },
+                  {
+                    "value": "怒族",
+                    "label": "怒族"
+                  },
+                  {
+                    "value": "乌孜别克族",
+                    "label": "乌孜别克族"
+                  },
+                  {
+                    "value": "俄罗斯族",
+                    "label": "俄罗斯族"
+                  },
+                  {
+                    "value": "鄂温克族",
+                    "label": "鄂温克族"
+                  },
+                  {
+                    "value": "崩龙族",
+                    "label": "崩龙族"
+                  },
+                  {
+                    "value": "保安族",
+                    "label": "保安族"
+                  },
+                  {
+                    "value": "裕固族",
+                    "label": "裕固族"
+                  },
+                  {
+                    "value": "京族",
+                    "label": "京族"
+                  },
+                  {
+                    "value": "塔塔尔族",
+                    "label": "塔塔尔族"
+                  },
+                  {
+                    "value": "独龙族",
+                    "label": "独龙族"
+                  },
+                  {
+                    "value": "鄂伦春族",
+                    "label": "鄂伦春族"
+                  },
+                  {
+                    "value": "赫哲族",
+                    "label": "赫哲族"
+                  },
+                  {
+                    "value": "门巴族",
+                    "label": "门巴族"
+                  },
+                  {
+                    "value": "珞巴族",
+                    "label": "珞巴族"
+                  },
+                  {
+                    "value": "基诺族",
+                    "label": "基诺族"
+                  }
+                ],
+                marriageArr: [
+                  {
+                    "value": "未婚",
+                    "label": "未婚"
+                  },{
+                    "value": "已婚",
+                    "label": "已婚"
+                  },{
+                    "value": "丧偶",
+                    "label": "丧偶"
+                  },{
+                    "value": "其他",
+                    "label": "其他"
+                  }
+                ],
+                educationArr: [
+                  {
+                    "value": "小学",
+                    "label": "小学"
+                  },{
+                    "value": "初中",
+                    "label": "初中"
+                  },{
+                    "value": "高中",
+                    "label": "高中"
+                  },{
+                    "value": "本科",
+                    "label": "本科"
+                  },{
+                    "value": "研究生",
+                    "label": "研究生"
+                  },{
+                    "value": "博士",
+                    "label": "博士"
+                  }
+                ],
                 ruleForm: {
                     empName: '',
                     idCard: '',
                     phone: '',
                     empId: '',
                     username: '',
+                    password: '',
                     email: '',
-                    pass: '',
-                    checkPass: '',
-                    age: '',
+                    sex: '',
                     province: '',
                     city: '',
-                    county: ''
+                    county: '',
+                    telephone: '',
+                    address: '',
+                    currentAddress: '',
+                    politics: '',
+                    national: '',
+                    marriage: '',
+                    education: ''
                 },
                 rules: {
                     empName: [
@@ -292,47 +584,58 @@
             },
             changeName() {
                 this.ruleForm.username = this.ruleForm.empName + this.ruleForm.empId
-                console.log(this.ruleForm.username + "111")
             },
-            submitForm(name) {
+            nextSubmit(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.active += 1
+                      this.active += 1
+                      if(this.active == 2 && this.ruleForm.idCard != ''){
+                        this.ruleForm.password = 'Aa' + this.ruleForm.idCard.slice(-6)
+                      }
+                      if(this.active == 2 && this.ruleForm.sex == ''){
+                        this.ruleForm.sex = 2
+                      }
                     }
                 })
             },
-            handleSubmit(name) {
+            backSubmit(){
+              this.active -= 1
+            },
+            submitForm(name) {
                 var self = this
-                this.remindMsg = ''
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         // 验证用户名是否存在
-                        this.$axios.get('/user-server/user/register', {
+                        this.$axios.post('/employee-admin-server/emp/addEmp', {
                             params: {
-                                username: this.user.username
+                                staffBase: {
+                                  empId : this.ruleForm.empId,
+                                  empName: this.ruleForm.empName
+                                },
+                                staffDept: {},
+                                staffDetail: {
+                                  idCard: this.ruleForm.idCard,
+                                  phone: this.ruleForm.phone,
+                                  username: this.ruleForm.username,
+                                  password: this.ruleForm.password,
+                                  email: this.ruleForm.email,
+                                  sex: this.ruleForm.sex,
+                                  province: this.ruleForm.province,
+                                  city: this.ruleForm.city,
+                                  county: this.ruleForm.county,
+                                  telephone: this.ruleForm.telephone,
+                                  address: this.ruleForm.address,
+                                  currentAddress: this.ruleForm.currentAddress,
+                                  politics: this.ruleForm.politics,
+                                  national: this.ruleForm.national,
+                                  marriage: this.ruleForm.marriage,
+                                  education: this.ruleForm.education
+                                }
                             }
-                        }).then((data) => {
-                            var data = data.data
-                            if (data.status == 1) {
-                                this.$axios.post('/user-server/user/register', {
-                                    name: this.user.username,
-                                    password: this.user.password,
-                                    phone: this.user.phone,
-                                    verify: this.user.verify
-                                }).then((data) => {
-                                    var data = data.data
-                                    if (data.status == 1) {
-                                        //路由跳转
-                                        // self.$router.push({path: '/login'})
-                                        window.location.href = "/login"
-                                    } else {
-                                        this.remindMsg = '* ' + data.msg
-                                    }
-                                })
-                            } else {
-                                this.remindName = true
-                                this.$refs.user.validateField('username')
-                            }
+                        }).then((data) => { 
+                        //路由跳转
+                        // self.$router.push({path: '/login'})
+                        window.location.href = "/login"
                         })
                     }
                 })
