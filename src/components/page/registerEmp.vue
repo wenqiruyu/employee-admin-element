@@ -3,11 +3,57 @@
     <div style="width: 600px; margin: 0 auto;">
       <el-steps :active="active">
         <el-step title="员工基本信息" description="此处信息必填"></el-step>
+        <el-step title="分配部门及直属上级" description="此处信息必填"></el-step>
         <el-step title="平台用户注册" description="性别、邮箱信息选填"></el-step>
         <el-step title="补充员工信息" description="此处信息选填"></el-step>
       </el-steps>
     </div>
     <div style="margin-top: 40px;">
+      <div v-if="active == 1" style="width: 600px; margin: 0 auto;">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
+          <el-form-item label="员工姓名" prop="empName" style="margin-left: 15px">
+            <el-input v-model="ruleForm.empName" @change="changeName()" style="width: 240px;"></el-input>
+          </el-form-item>
+          <el-form-item label="员工号" prop="empId" style="margin-left: 15px">
+            <el-input v-model="ruleForm.empId" :disabled="true" :placeholder="ruleForm.empId"
+                      style="width: 240px;"></el-input>
+          </el-form-item>
+          <el-form-item label="身份证号" prop="idCard" style="margin-left: 15px">
+            <el-input v-model="ruleForm.idCard" style="width: 240px;"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="phone" style="margin-left: 15px">
+            <el-input v-model="ruleForm.phone" style="width: 240px;"></el-input>
+          </el-form-item>
+          <el-form-item label="户籍所在地">
+            <div style="float: left;margin-left: 15px;width: 360px;">
+              <el-form-item style="float: left;width: 120px;" prop="province">
+                <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
+                  <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item style="float: left;width: 120px;" prop="city">
+                <el-select v-model="ruleForm.city" placeholder="城市" @change="changeCity">
+                  <el-option v-for="(item,index) in citiesArr" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item style="float: left;width: 120px;" prop="county">
+                <el-select v-model="ruleForm.county" placeholder="区县">
+                  <el-option v-for="(item,index) in countyArr" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-form-item>
+          <el-form-item style="margin-left: 15px;">
+            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <div v-if="active == 1" style="width: 600px; margin: 0 auto;">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
           <el-form-item label="员工姓名" prop="empName" style="margin-left: 15px">
@@ -211,7 +257,7 @@
                 provinceArr: [],
                 citiesArr: [],
                 countyArr: [],
-                politicsArr: [    
+                politicsArr: [
                   {
                     "value": "群众",
                     "label": "群众"
@@ -632,7 +678,7 @@
                                   education: this.ruleForm.education
                                 }
                             }
-                        }).then((data) => { 
+                        }).then((data) => {
                         //路由跳转
                         // self.$router.push({path: '/login'})
                         window.location.href = "/login"
