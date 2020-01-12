@@ -24,71 +24,26 @@
           <el-form-item label="手机号" prop="phone" style="margin-left: 15px">
             <el-input v-model="ruleForm.phone" style="width: 240px;"></el-input>
           </el-form-item>
-          <el-form-item label="户籍所在地">
-            <div style="float: left;margin-left: 15px;width: 360px;">
-              <el-form-item style="float: left;width: 120px;" prop="province">
-                <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                  <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item style="float: left;width: 120px;" prop="city">
-                <el-select v-model="ruleForm.city" placeholder="城市" @change="changeCity">
-                  <el-option v-for="(item,index) in citiesArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item style="float: left;width: 120px;" prop="county">
-                <el-select v-model="ruleForm.county" placeholder="区县">
-                  <el-option v-for="(item,index) in countyArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-form-item>
-          <el-form-item style="margin-left: 15px;">
-            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div v-if="active == 1" style="width: 600px; margin: 0 auto;">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
-          <el-form-item label="员工姓名" prop="empName" style="margin-left: 15px">
-            <el-input v-model="ruleForm.empName" @change="changeName()" style="width: 240px;"></el-input>
-          </el-form-item>
-          <el-form-item label="员工号" prop="empId" style="margin-left: 15px">
-            <el-input v-model="ruleForm.empId" :disabled="true" :placeholder="ruleForm.empId"
-                      style="width: 240px;"></el-input>
-          </el-form-item>
-          <el-form-item label="身份证号" prop="idCard" style="margin-left: 15px">
-            <el-input v-model="ruleForm.idCard" style="width: 240px;"></el-input>
-          </el-form-item>
-          <el-form-item label="手机号" prop="phone" style="margin-left: 15px">
-            <el-input v-model="ruleForm.phone" style="width: 240px;"></el-input>
+          <el-form-item label="入职时间" prop="participateTime">
+            <el-date-picker v-model="ruleForm.participateTime" type="date" value-format="yyyy-MM-dd" v-bind:placeholder="ruleForm.participateTime" style="width: 180px;float: left;margin-left: 15px;"/>
           </el-form-item>
           <el-form-item label="户籍所在地">
             <div style="float: left;margin-left: 15px;width: 360px;">
               <el-form-item style="float: left;width: 120px;" prop="province">
                 <el-select v-model="ruleForm.province" placeholder="省份" @change="changeProvince">
-                  <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
+                  <el-option v-for="(item,index) in provinceArr" :key="item.value" :value="item.value" :label ="item.label">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="float: left;width: 120px;" prop="city">
                 <el-select v-model="ruleForm.city" placeholder="城市" @change="changeCity">
-                  <el-option v-for="(item,index) in citiesArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
+                  <el-option v-for="(item,index) in citiesArr" :key="item.value" :value="item.value" :label ="item.label">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="float: left;width: 120px;" prop="county">
                 <el-select v-model="ruleForm.county" placeholder="区县">
-                  <el-option v-for="(item,index) in countyArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
+                  <el-option v-for="(item,index) in countyArr" :key="item.value" :value="item.value" :label ="item.label">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -101,12 +56,42 @@
       </div>
       <div v-if="active == 2" style="width: 600px; margin: 0 auto;">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
-          <el-form-item label="平台用户名" prop="username" style="margin-left: 15px;">
+          <el-form-item label="员工部门">
+            <div style="float: left;margin-left: 15px;width: 360px;">
+                <el-select v-model="ruleForm.deptId" placeholder="选择员工部门" @change="changeDept">
+                  <el-option v-for="(item,index) in deptArr" :key="item.deptId" :value="item.deptId" :label ="item.deptName">
+                  </el-option>
+                </el-select>
+            </div>
+          </el-form-item>
+          <el-form-item label="员工职位">
+            <div style="float: left;margin-left: 15px;width: 360px;">
+                <el-select v-model="ruleForm.empPosition" placeholder="选择员工职位">
+                  <el-option v-for="(item,index) in positionArr" :key="item.positionName" :value="item.positionName" :label ="item.positionName">
+                  </el-option>
+                </el-select>
+            </div>
+          </el-form-item>
+          <el-form-item label="员工上级领导名" style="margin-left: 15px">
+            <el-input v-model="ruleForm.superEmpName" style="width: 222px;"></el-input>
+          </el-form-item>
+          <el-form-item label="员工上级领导员工号" style="margin-left: 15px">
+            <el-input v-model="ruleForm.superEmpId" style="width: 222px;"></el-input>
+          </el-form-item>
+          <el-form-item style="margin-left: 15px;">
+            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-if="active == 3" style="width: 600px; margin: 0 auto;">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
+          <el-form-item label="平台用户名" style="margin-left: 15px;">
             <el-input v-model="ruleForm.username" autocomplete="off" :disabled="true" style="width: 240px;">
               {{this.ruleForm.username}}
             </el-input>
+            <div style="margin-bottom: -30px;color: #727D81;font-size: 12px;"><span>*新用户用户名默认为员工姓名 + 员工号</span></div>
           </el-form-item>
-          <el-form-item label="平台用户密码" prop="password" style="margin-left: 15px;">
+          <el-form-item label="平台用户密码" style="margin-left: 15px;">
             <el-input type="password" v-model="ruleForm.password" autocomplete="off" :disabled="true" style="width: 240px;">
               {{this.ruleForm.password}}
             </el-input>
@@ -128,7 +113,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="active == 3" style="width: 600px; margin: 0 auto;">
+      <div v-if="active == 4" style="width: 600px; margin: 0 auto;">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px">
           <el-form-item label="紧急联系电话" prop="telephone" style="margin-left: 15px;">
             <el-input v-model="ruleForm.telephone" autocomplete="off" style="width: 222px;">
@@ -148,8 +133,7 @@
           <el-form-item label="所属党派">
             <div style="float: left;margin-left: 15px;width: 360px;">
                 <el-select v-model="ruleForm.politics" placeholder="选择所属党派">
-                  <el-option v-for="(item,index) in politicsArr" :key="item.value" :value="item.value">
-                    {{ item.label }}
+                  <el-option v-for="(item,index) in politicsArr" :key="item.value" :value="item.value" :label ="item.label">
                   </el-option>
                 </el-select>
             </div>
@@ -157,8 +141,7 @@
           <el-form-item label="所属民族">
             <div style="float: left;margin-left: 15px;width: 360px;">
               <el-select v-model="ruleForm.national" placeholder="选择所属民族">
-                <el-option v-for="(item,index) in nationalArr" :key="item.value" :value="item.value">
-                  {{ item.label }}
+                <el-option v-for="(item,index) in nationalArr" :key="item.value" :value="item.value" :label ="item.label">
                 </el-option>
               </el-select>
             </div>
@@ -166,8 +149,7 @@
           <el-form-item label="婚姻状态">
             <div style="float: left;margin-left: 15px;width: 360px;">
               <el-select v-model="ruleForm.marriage" placeholder="选择婚姻状态">
-                <el-option v-for="(item,index) in marriageArr" :key="item.value" :value="item.value">
-                  {{ item.label }}
+                <el-option v-for="(item,index) in marriageArr" :key="item.value" :value="item.value" :label ="item.label">
                 </el-option>
               </el-select>
             </div>
@@ -175,8 +157,7 @@
           <el-form-item label="个人学历">
             <div style="float: left;margin-left: 15px;width: 360px;">
               <el-select v-model="ruleForm.education" placeholder="选择个人学历">
-                <el-option v-for="(item,index) in educationArr" :key="item.value" :value="item.value">
-                  {{ item.label }}
+                <el-option v-for="(item,index) in educationArr" :key="item.value" :value="item.value" :label ="item.label">
                 </el-option>
               </el-select>
             </div>
@@ -245,15 +226,26 @@
             };
             const validateEmail = (rule, value, callback) => {
                 if (value != '' && !regEmail.test(value)) {
-                    callback(new Error('请输入正确的邮箱号'));
+                  callback(new Error('请输入正确的邮箱号'));
+                }else if (value != '' && regEmail.test(value)){
+                  callback();
                 }
                 if(value == ''){
                   callback();
                 }
             }
+            const validateParticipateTime = (rule, value, callback) => {
+              if (value === '') {
+                callback(new Error('入职时间不能为空'));
+              } else {
+                callback();
+              }
+            }
             return {
                 active: 1,
                 empId: '',
+                deptArr:[],
+                positionArr: [],
                 provinceArr: [],
                 citiesArr: [],
                 countyArr: [],
@@ -558,7 +550,12 @@
                     politics: '',
                     national: '',
                     marriage: '',
-                    education: ''
+                    education: '',
+                    deptId: '',
+                    empPosition: '',
+                    superEmpName: '',
+                    superEmpId: '',
+                    participateTime: ''
                 },
                 rules: {
                     empName: [
@@ -581,33 +578,47 @@
                     ],
                     email: [
                         {validator: validateEmail, trigger: 'blur'}
+                    ],
+                    participateTime: [
+                      {validator: validateParticipateTime, trigger: 'blur'}
                     ]
                 }
             };
         },
         mounted() {
-            this.getEmpId()
-            this.getProvince()
+          this.getAllDept()
+          this.getEmpId()
+          this.getProvince()
         },
         created() {
 
         },
         methods: {
-            getProvince() {
-                this.$axios.get('http://localhost:22346/static/json/provinces.json').then((res) => {
-                    this.provinceArr = res.data.data
-                })
-            },
-            changeProvince(val) {
-                for (var i = 0; i < this.provinceArr.length; i++) {
-                    if (val == this.provinceArr[i].value) {
-                        this.citiesArr = this.provinceArr[i].children
-                        this.ruleForm.city = ''
-                        this.ruleForm.county = ''
-                        this.countyArr = []
-                    }
+          getAllDept(){
+            this.$axios.post('/employee-admin-server/dept/getAllDept').then((res) =>{
+                if (res.data.code == 200) {
+                    this.deptArr = res.data.data
+                    console.log(this.deptArr)
+                } else {
+                  this.$message.error(res.data.msg)
                 }
-            },
+            })
+          },
+          getProvince() {
+            this.$axios.get('http://localhost:22346/static/json/provinces.json').then((res) => {
+              this.provinceArr = res.data.data
+            })
+          },
+          changeProvince(val) {
+            for (var i = 0; i < this.provinceArr.length; i++) {
+              if (val == this.provinceArr[i].value) {
+                this.citiesArr = this.provinceArr[i].children
+                this.ruleForm.city = ''
+                this.ruleForm.county = ''
+                this.countyArr = []
+              }
+            }
+          },
             changeCity(val) {
                 for (var i = 0; i < this.citiesArr.length; i++) {
                     if (val == this.citiesArr[i].value) {
@@ -615,6 +626,16 @@
                     }
                 }
             },
+          changeDept(val) {
+            this.positionArr = []
+            for (var i = 0; i < this.deptArr.length; i++) {
+              if (val == this.deptArr[i].deptId) {
+                this.positionArr = this.deptArr[i].position
+                this.ruleForm.empPosition = ''
+                
+              }
+            }
+          },
             getEmpId() {
                 this.$axios.post("/employee-admin-server/emp/getEmpId").then((res) => {
                     if (res.data.code == 200) {
@@ -656,9 +677,16 @@
                             params: {
                                 staffBase: {
                                   empId : this.ruleForm.empId,
-                                  empName: this.ruleForm.empName
+                                  empName: this.ruleForm.empName,
+                                  participateTime: this.ruleForm.participateTime
                                 },
-                                staffDept: {},
+                                staffDept: {
+                                  empId: this.ruleForm.empId,
+                                  deptId: this.ruleForm.deptId,
+                                  empPosition: this.ruleForm.empPosition,
+                                  superEmpName: this.ruleForm.superEmpName,
+                                  superEmpId: this.ruleForm.superEmpId,
+                                },
                                 staffDetail: {
                                   idCard: this.ruleForm.idCard,
                                   phone: this.ruleForm.phone,
@@ -678,10 +706,20 @@
                                   education: this.ruleForm.education
                                 }
                             }
-                        }).then((data) => {
-                        //路由跳转
-                        // self.$router.push({path: '/login'})
-                        window.location.href = "/login"
+                        }).then((res) => {
+                          console.log(res.data.data)
+                          if(res.data.code == 200){
+                            this.$message({
+                                message: '该员工信息录入成功',
+                                type: 'success'
+                            })
+                            window.location.href = "/registerEmp"
+                          }else {
+                            this.$message.error(res.data.msg)
+                          }
+                          //路由跳转
+                          // self.$router.push({path: '/login'})
+                          // window.location.href = "/login"
                         })
                     }
                 })
