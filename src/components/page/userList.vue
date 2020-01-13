@@ -1,77 +1,90 @@
 <template>
-    <div class="table">
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 员工管理</el-breadcrumb-item>
-                <el-breadcrumb-item>员工列表</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="container">
-            <div class="handle-box">
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="search" @click="search">搜索</el-button>
-            </div>
-            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="username" label="用户名" width="180">
-                </el-table-column>
-                <el-table-column prop="email" label="邮箱" width="180" :formatter="formatEmail">
-                </el-table-column>
-                <el-table-column prop="phone" label="手机号" width="120">
-                </el-table-column>
-                <el-table-column prop="sex" label="性别" width="100" :formatter="formatSex">
-                </el-table-column>
-                <el-table-column prop="birthday" label="生日" width="100" :formatter="formatBirthday">
-                </el-table-column>
-                <el-table-column prop="province" label="户籍所在地" :formatter="formatProvince">
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
-                </el-pagination>
-            </div>
-        </div>
+  <div class="table">
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 员工管理</el-breadcrumb-item>
+        <el-breadcrumb-item>员工列表</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="container">
+      <div class="content-message">
+        <span>此处信息包含员工隐私信息，请勿外传，若有违规行为，后果自负！</span>
+      </div>
+      <div class="handle-box">
+        <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
+          <el-option key="1" label="广东省" value="广东省"></el-option>
+          <el-option key="2" label="湖南省" value="湖南省"></el-option>
+        </el-select>
+        <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+      </div>
+      <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column prop="empId" label="员工号" width="90">
+        </el-table-column>
+        <el-table-column prop="empName" label="员工名" width="90">
+        </el-table-column>
+        <el-table-column prop="deptName" label="所属部门" width="100">
+        </el-table-column>
+        <el-table-column prop="superEmp" label="直属上级" width="140" :formatter="superEmp">
+        </el-table-column>
+        <el-table-column prop="username" label="用户名" width="140">
+        </el-table-column>
+        <el-table-column prop="email" label="邮箱" width="160" :formatter="formatEmail">
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号" width="110">
+        </el-table-column>
+        <el-table-column prop="sex" label="性别" width="50" :formatter="formatSex">
+        </el-table-column>
+        <el-table-column prop="birthday" label="生日" width="100" :formatter="formatBirthday">
+        </el-table-column>
+        <el-table-column prop="province" label="户籍所在地" width="170" :formatter="formatProvince">
+        </el-table-column>
+        <el-table-column prop="address" label="户籍详细地址">
+        </el-table-column>
+        <el-table-column label="操作" width="180" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+        </el-pagination>
+      </div>
+    </div>
 
-        <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="日期">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd"
+                          style="width: 100%;"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input v-model="form.address"></el-input>
+        </el-form-item>
 
-            </el-form>
-            <span slot="footer" class="dialog-footer">
+      </el-form>
+      <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
-        </el-dialog>
+    </el-dialog>
 
-        <!-- 删除提示框 -->
-        <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
-            <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
-            <span slot="footer" class="dialog-footer">
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
+      <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
                 <el-button @click="delVisible = false">取 消</el-button>
                 <el-button type="primary" @click="deleteRow">确 定</el-button>
             </span>
-        </el-dialog>
-    </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -135,37 +148,40 @@
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
                 // };
-                this.$axios.post("/employee-admin-server/user/getAllUser",{
-                            page: this.page,
-                            pageSize: this.pageSize
-                        }).then((res) => {
-                if(res.data.code == 200){
-                    // 数组复制
-                    this.tableData = res.data.data.slice()
-                    console.log(res.data.data)
-                    this.$message({
-                        message: '恭喜你，成功获取员工信息',
-                        type: 'success'
-                    })
-                }else{
-                    this.$message.error(res.data.msg)
-                }
-            })
+                this.$axios.post("/employee-admin-server/user/getAllUser", {
+                    page: this.page,
+                    pageSize: this.pageSize
+                }).then((res) => {
+                    if (res.data.code == 200) {
+                        // 数组复制
+                        this.tableData = res.data.data.slice()
+                        console.log(res.data.data)
+                        this.$message({
+                            message: '恭喜你，成功获取员工信息',
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+                })
             },
             search() {
                 this.is_search = true;
             },
-            formatEmail(row, column){
+            superEmp(row, column) {
+                return (row.superEmpId === null || row.superEmpName === null) ? '无直属上级' :
+                    (row.superEmpId + " " + row.superEmpName);
+            },
+            formatEmail(row, column) {
                 return row.email === null ? '未绑定' : row.email;
             },
-            formatBirthday(row, column){
+            formatBirthday(row, column) {
                 return row.birthday === null ? '未绑定' : row.birthday;
             },
             formatSex(row, column) {
                 return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '保密';
             },
-            formatProvince(row, column){
-
+            formatProvince(row, column) {
                 return (row.province === null || row.city === null || row.county == null) ? '请提醒员工提供正确户籍信息' :
                     (row.province + " " + row.city + " " + row.county);
             },
@@ -203,10 +219,10 @@
             saveEdit() {
                 this.$set(this.tableData, this.idx, this.form);
                 this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                this.$message.success(`修改第 ${this.idx + 1} 行成功`);
             },
             // 确定删除
-            deleteRow(){
+            deleteRow() {
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
@@ -217,30 +233,40 @@
 </script>
 
 <style scoped>
-    .handle-box {
-        margin-bottom: 20px;
-    }
+  .content-message {
+    color: #F70909;
+    font-size: 16px;
+  }
 
-    .handle-select {
-        width: 120px;
-    }
+  .handle-box {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
-    .handle-input {
-        width: 300px;
-        display: inline-block;
-    }
-    .del-dialog-cnt{
-        font-size: 16px;
-        text-align: center
-    }
-    .table{
-        width: 100%;
-        font-size: 14px;
-    }
-    .red{
-        color: #ff0000;
-    }
-    .mr10{
-        margin-right: 10px;
-    }
+  .handle-select {
+    width: 120px;
+  }
+
+  .handle-input {
+    width: 300px;
+    display: inline-block;
+  }
+
+  .del-dialog-cnt {
+    font-size: 16px;
+    text-align: center
+  }
+
+  .table {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .red {
+    color: #ff0000;
+  }
+
+  .mr10 {
+    margin-right: 10px;
+  }
 </style>
