@@ -84,7 +84,7 @@
                                 this.userInfo = res.data.data
                                 this.oldUserInfo = res.data.data
                             }else{
-                                this.$message.error(data.data.msg);
+                                this.$message.error(res.data.msg);
                             }
                     })
             },
