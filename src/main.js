@@ -18,8 +18,8 @@ Vue.use(ElementUI, {
     size: 'medium'
 });
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-// axios.defaults.baseURL = 'http://122.51.166.19:22345'
-axios.defaults.baseURL = 'http://localhost:22345'
+axios.defaults.baseURL = 'http://122.51.166.19:22345'
+// axios.defaults.baseURL = 'http://localhost:22345'
 Vue.prototype.$axios = axios;
 
 //使用钩子函数对路由进行权限跳转
