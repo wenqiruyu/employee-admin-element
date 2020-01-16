@@ -79,6 +79,7 @@
             <el-input v-model="ruleForm.superEmpId" style="width: 222px;"></el-input>
           </el-form-item>
           <el-form-item style="margin-left: 15px;">
+            <el-button type="primary" @click="backSubmit">上一步</el-button>
             <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
           </el-form-item>
         </el-form>
@@ -108,8 +109,8 @@
             <el-input v-model="ruleForm.email" style="width: 240px;"></el-input>
           </el-form-item>
           <el-form-item style="margin-left: 15px;">
-            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
             <el-button type="primary" @click="backSubmit">上一步</el-button>
+            <el-button type="primary" @click="nextSubmit('ruleForm')">下一步</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -163,8 +164,8 @@
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
             <el-button type="primary" @click="backSubmit">上一步</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -632,7 +633,7 @@
               if (val == this.deptArr[i].deptId) {
                 this.positionArr = this.deptArr[i].position
                 this.ruleForm.empPosition = ''
-                
+
               }
             }
           },
