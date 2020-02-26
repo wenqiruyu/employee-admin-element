@@ -3,14 +3,14 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios';
 import ElementUI from 'element-ui';
+import  echarts from 'echarts' // 引入echarts的图表插件
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
 import './components/common/directives';
 import './assets/icon/iconfont.css';
 import "babel-polyfill";
-// import  echarts from 'echarts' // 引入echarts的图表插件
 
-// Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {
@@ -18,8 +18,8 @@ Vue.use(ElementUI, {
     size: 'medium'
 });
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-axios.defaults.baseURL = 'http://122.51.166.19:22345'
-// axios.defaults.baseURL = 'http://localhost:22345'
+// axios.defaults.baseURL = 'http://122.51.166.19:22345'
+axios.defaults.baseURL = 'http://localhost:22345'
 Vue.prototype.$axios = axios;
 
 //使用钩子函数对路由进行权限跳转

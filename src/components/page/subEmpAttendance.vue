@@ -2,51 +2,38 @@
   <div class="table">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 员工管理</el-breadcrumb-item>
-        <el-breadcrumb-item>员工列表</el-breadcrumb-item>
+        <el-breadcrumb-item><i class="iconfont icon-wen-team"></i> 考勤管理</el-breadcrumb-item>
+        <el-breadcrumb-item>下属考勤</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
-      <div class="content-message">
-        <span>此处信息包含员工隐私信息，请勿外传，若有违规行为，后果自负！</span>
-      </div>
       <div class="handle-box">
-        <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-        <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-          <el-option key="1" label="广东省" value="广东省"></el-option>
-          <el-option key="2" label="湖南省" value="湖南省"></el-option>
+        <span>请选择下属姓名：</span>
+        <el-select v-model="subEmpId" placeholder="选择下属" class="handle-select mr10">
+          <el-option v-for="(item,index) in subEmpNameArr" :key="item.empId" :value="item.empId" :label ="item.empName">
+          </el-option>
         </el-select>
-        <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="primary" class="handle-del mr10" @click="querySubEmp">查看</el-button>
       </div>
-      <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange" :cell-style="cellStyle">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="empId" label="员工号" width="90">
         </el-table-column>
         <el-table-column prop="empName" label="员工名" width="90">
         </el-table-column>
-        <el-table-column prop="deptName" label="所属部门" width="100">
+        <el-table-column prop="attendanceTime" label="工作日期" width="100">
         </el-table-column>
-        <el-table-column prop="superEmp" label="直属上级" width="140" :formatter="superEmp">
+        <el-table-column prop="startTime" label="签到时间" width="80">
         </el-table-column>
-        <el-table-column prop="username" label="用户名" width="140">
+        <el-table-column prop="endTime" label="签退时间" width="80">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="160" :formatter="formatEmail">
+        <el-table-column prop="startIp" label="签到电脑IP" width="120">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="110">
+        <el-table-column prop="endIp" label="签退电脑IP" width="120">
         </el-table-column>
-        <el-table-column prop="sex" label="性别" width="50" :formatter="formatSex">
+        <el-table-column prop="absenceDutyFlag" label="考勤状态" width="80" :formatter="absenceDutyFlag">
         </el-table-column>
-        <el-table-column prop="birthday" label="生日" width="100" :formatter="formatBirthday">
-        </el-table-column>
-        <el-table-column prop="province" label="户籍所在地" width="170" :formatter="formatProvince">
-        </el-table-column>
-        <el-table-column prop="address" label="户籍详细地址">
-        </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-          </template>
+        <el-table-column prop="reason" label="缺勤原因">
         </el-table-column>
       </el-table>
       <div class="pagination">
@@ -94,10 +81,12 @@
             return {
                 url: './vuetable.json',
                 tableData: [],
+                username: '',
                 page: 1,
                 pageSize: 10,
                 multipleSelection: [],
-                select_cate: '',
+                subEmpId: '',
+                subEmpNameArr: [],
                 select_word: '',
                 del_list: [],
                 is_search: false,
@@ -111,8 +100,12 @@
                 idx: -1
             }
         },
+        mounted(){
+            this.getSubEmp()
+        },
         created() {
-            this.getData();
+            this.username = localStorage.getItem('employee_username')
+            this.getData()
         },
         computed: {
             data() {
@@ -141,13 +134,9 @@
                 this.page = val;
                 this.getData();
             },
-            // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                // if (process.env.NODE_ENV === 'development') {
-                //     this.url = '/ms/table/list';
-                // };
-                this.$axios.post("/employee-admin-server/user/getAllUser", {
+                this.$axios.post("/employee-admin-server/attendance/getSubEmpWorkAttendance", {
+                    username: this.username,
                     page: this.page,
                     pageSize: this.pageSize
                 }).then((res) => {
@@ -155,7 +144,7 @@
                         // 数组复制
                         this.tableData = res.data.data.slice()
                         this.$message({
-                            message: '恭喜你，成功获取员工信息',
+                            message: '恭喜你，成功获取员工考勤信息',
                             type: 'success'
                         })
                     } else {
@@ -163,28 +152,62 @@
                     }
                 })
             },
+            getSubEmp(){
+              this.$axios.post("/employee-admin-server/staffDept/getSubEmp",{
+                username: this.username
+              }).then((res)=>{
+                if (res.data.code == 200) {
+                        // 数组复制
+                        this.subEmpNameArr = res.data.data.slice()
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+              })
+            },
+            querySubEmp(){
+              if (this.subEmpId != '' && this.subEmpId != null) {
+                this.$axios.post("/employee-admin-server/attendance/getUserWorkAttendance", {
+                    empId: this.subEmpId,
+                    page: this.page,
+                    pageSize: this.pageSize
+                }).then((res) => {
+                    if (res.data.code == 200) {
+                        // 数组复制
+                        this.tableData = res.data.data.slice()
+                        this.$message({
+                            message: '恭喜你，成功获取员工考勤信息',
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+                })
+              } else {
+                this.$message.error('请选择你想查看下属的名字哦！')
+              }
+            },
             search() {
                 this.is_search = true;
             },
-            superEmp(row, column) {
-                return (row.superEmpId === null || row.superEmpName === null) ? '无直属上级' :
-                    (row.superEmpId + " " + row.superEmpName);
+            absenceDutyFlag(row, column) {
+                if(row.absenceDutyFlag === 0){
+                    return '正常'
+                }else if(row.absenceDutyFlag === 1){
+                    return '缺勤'
+                }else if(row.absenceDutyFlag === 2){
+                    return '未签退'
+                }else if(row.absenceDutyFlag === 2){
+                    return '早退'
+                }else if(row.absenceDutyFlag === 2){
+                    return '迟到'
+                }
             },
-            formatEmail(row, column) {
-                return row.email === null ? '未绑定' : row.email;
-            },
-            formatBirthday(row, column) {
-                return row.birthday === null ? '未绑定' : row.birthday;
-            },
-            formatSex(row, column) {
-                return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '保密';
-            },
-            formatProvince(row, column) {
-                return (row.province === null || row.city === null || row.county == null) ? '请提醒员工提供正确户籍信息' :
-                    (row.province + " " + row.city + " " + row.county);
-            },
-            filterTag(value, row) {
-                return row.tag === value;
+            cellStyle(row,column,rowIndex,columnIndex){
+                if(row.row.absenceDutyFlag === 1){
+                    return 'color:red'
+                }else if(row.row.absenceDutyFlag === 2 || row.row.absenceDutyFlag === 3 || row.row.absenceDutyFlag === 4){
+                    return 'color:green'
+                }
             },
             handleEdit(index, row) {
                 this.idx = index;
@@ -237,7 +260,7 @@
   }
 
   .handle-box {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     margin-bottom: 20px;
   }
 

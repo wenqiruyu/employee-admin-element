@@ -84,7 +84,8 @@
             return {
                 url: './vuetable.json',
                 tableData: [],
-                cur_page: 1,
+                page: 1,
+                pageSize: 10,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -101,20 +102,7 @@
             }
         },
         created() {
-            var self = this
-            this.$axios.post("/employee-admin-server/wages/getAllWages").then((res) => {
-                if(res.data.code == 200){
-                    // 数组复制
-                    self.tableData = res.data.data.slice()
-                    console.log(res.data.data)
-                    this.$message({
-                        message: '恭喜你，这是一条成功消息',
-                        type: 'success'
-                    })
-                }else{
-                    this.$message.error(res.data.msg)
-                }
-            })
+             this.getData();
         },
         computed: {
             data() {
@@ -140,19 +128,35 @@
         methods: {
             // 分页导航
             handleCurrentChange(val) {
-                this.cur_page = val;
+                this.page = val;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
+                // if (process.env.NODE_ENV === 'development') {
+                //     this.url = '/ms/table/list';
+                // };
+                // this.$axios.post(this.url, {
+                //     page: this.cur_page
+                // }).then((res) => {
+                //     this.tableData = res.data.list;
+                // })
+                this.$axios.post("/employee-admin-server/wages/getAllWages",{
+                    page: this.page,
+                    pageSize: this.pageSize
                 }).then((res) => {
-                    this.tableData = res.data.list;
+                    if(res.data.code == 200){
+                        // 数组复制
+                        this.tableData = res.data.data.slice()
+                        console.log(res.data.data)
+                        this.$message({
+                            message: '恭喜你，这是一条成功消息',
+                            type: 'success'
+                        })
+                    }else{
+                        this.$message.error(res.data.msg)
+                    }
                 })
             },
             search() {

@@ -27,19 +27,19 @@ export default new Router({
                     meta: { title: '用户列表' }
                 },
                 {
-                  path: '/registerUser',
-                  component: resolve => require(['../components/page/registerUser.vue'], resolve),
-                  meta: { title: '注册用户' }
+                    path: '/registerUser',
+                    component: resolve => require(['../components/page/registerUser.vue'], resolve),
+                    meta: { title: '注册用户' }
                 },
                 {
-                  path: '/registerEmp',
-                  component: resolve => require(['../components/page/registerEmp.vue'], resolve),
-                  meta: { title: '员工入职' }
+                    path: '/registerEmp',
+                    component: resolve => require(['../components/page/registerEmp.vue'], resolve),
+                    meta: { title: '员工入职' }
                 },
                 {
-                  path: '/deptList',
-                  component: resolve => require(['../components/page/deptList.vue'], resolve),
-                  meta: { title: '部门一览' }
+                    path: '/deptList',
+                    component: resolve => require(['../components/page/deptList.vue'], resolve),
+                    meta: { title: '部门一览' }
                 },
                 {
                     path: '/wagesGrant',
@@ -55,6 +55,31 @@ export default new Router({
                     path: '/wagesChange',
                     component: resolve => require(['../components/page/wagesChange.vue'], resolve),
                     meta: { title: '薪资变更' }
+                },
+                {
+                    path: '/userAttendance',
+                    component: resolve => require(['../components/page/userAttendance.vue'], resolve),
+                    meta: { title: '个人考勤' }
+                },
+                {
+                    path: '/monthAttendance',
+                    component: resolve => require(['../components/page/monthAttendance.vue'], resolve),
+                    meta: { title: '考勤统计' }
+                },
+                {
+                    path: '/subEmpAttendance',
+                    component: resolve => require(['../components/page/subEmpAttendance.vue'], resolve),
+                    meta: { title: '下属考勤' }
+                },
+                {
+                    path: '/empLeave',
+                    component: resolve => require(['../components/page/empLeave.vue'], resolve),
+                    meta: { title: '请假流程' }
+                },
+                {
+                    path: '/supplementSign',
+                    component: resolve => require(['../components/page/supplementSign.vue'], resolve),
+                    meta: { title: '补签流程' }
                 },
                 {
                     path: '/weChat',
