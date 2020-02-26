@@ -21,9 +21,9 @@
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="empId" label="员工号" width="90">
+        <el-table-column prop="empId" label="员工号" width="90" fixed>
         </el-table-column>
-        <el-table-column prop="empName" label="员工名" width="90">
+        <el-table-column prop="empName" label="员工名" width="90" fixed>
         </el-table-column>
         <el-table-column prop="deptName" label="所属部门" width="100">
         </el-table-column>
@@ -43,7 +43,7 @@
         </el-table-column>
         <el-table-column prop="address" label="户籍详细地址">
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="180" align="center" fixed="right">
           <template slot-scope="scope">
             <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
           </template>
@@ -258,10 +258,6 @@
   .table {
     width: 100%;
     font-size: 14px;
-  }
-
-  .red {
-    color: #ff0000;
   }
 
   .mr10 {
