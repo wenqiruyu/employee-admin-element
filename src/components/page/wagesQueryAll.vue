@@ -5,10 +5,14 @@
         <el-breadcrumb-item>
           <i class="iconfont icon-wen-book"></i> 薪资管理
         </el-breadcrumb-item>
-        <el-breadcrumb-item>个人薪资</el-breadcrumb-item>
+        <el-breadcrumb-item>薪资查询</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
+      <div class="handle-box">
+        <el-input v-model="select_word" placeholder="请输入员工名" class="handle-input mr10"></el-input>
+        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+      </div>
       <el-table
         :data="tableData"
         border
@@ -144,10 +148,9 @@ export default {
       //     this.tableData = res.data.list;
       // })
       this.$axios
-        .post('/employee-admin-server/wages/getWages', {
+        .post('/employee-admin-server/wages/getAllWages', {
           page: this.page,
-          pageSize: this.pageSize,
-          username: localStorage.getItem('employee_username')
+          pageSize: this.pageSize
         })
         .then(res => {
           if (res.data.code == 200) {
@@ -165,15 +168,32 @@ export default {
     },
     search() {
       this.is_search = true
+      this.$axios
+        .post('/employee-admin-server/wages/getWagesByEmpName', {
+          empName: this.select_word
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            // 数组复制
+            this.tableData = res.data.data.slice()
+            console.log(res.data.data)
+            this.$message({
+              message: '恭喜你，这是一条成功消息',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.data.msg)
+          }
+        })
     },
     formatEmail(row, column) {
-      return row.email === null ? '未绑定' : row.email
+      return row.email === null ? '为绑定' : row.email
     },
     formatQQ(row, column) {
-      return row.qq === null ? '未绑定' : row.qq
+      return row.qq === null ? '为绑定' : row.qq
     },
     formatBirthday(row, column) {
-      return row.birthday === null ? '未绑定' : row.birthday
+      return row.birthday === null ? '为绑定' : row.birthday
     },
     formatSex(row, column) {
       return row.sex === 1 ? '男' : row.sex === 2 ? '女' : '保密'
@@ -237,7 +257,7 @@ export default {
 }
 
 .handle-input {
-  width: 300px;
+  width: 150px;
   display: inline-block;
 }
 .del-dialog-cnt {
